@@ -6,7 +6,7 @@ import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 //import com.google.gwt.user.client.Window;
 import com.thetriumvirate.game.Main;
 
-public class HtmlLauncher extends GwtApplication {
+public class HtmlLauncher extends com.badlogic.gdx.backends.gwt.GwtApplication {
 
         @Override
         public GwtApplicationConfiguration getConfig () {

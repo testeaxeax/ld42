@@ -37,7 +37,7 @@ public class Main extends Game {
 	
 	public Main(FontLoader fl) {
 		RATIO = (float) SCREEN_WIDTH / (float) SCREEN_HEIGHT;
-		// TODO Set Factors
+		// TODO Set factors
 		DEFAULT_BUTTON_WIDTH = SCREEN_WIDTH * 0.1953125f;
 		DEFAULT_BUTTON_HEIGHT = SCREEN_WIDTH * 0.09765625f;
 		DEFAULT_FONTSIZE = (int) (SCREEN_WIDTH * 0.029296875f);

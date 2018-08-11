@@ -19,17 +19,29 @@ public final class StartScreen implements Screen, InputProcessor {
 	// private static final String RES_SOMETHING = "somewhere/something";
 	
 	private ArrayList<Keybutton> buttons;
+	private WordButton testWord;
 	
 	private Main game;
 	private OrthographicCamera cam;
 	
-	public StartScreen(Main game) {
+	public StartScreen(final Main game) {
 		this.game = game;
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, CAM_WIDTH, CAM_HEIGHT);
 		cam.update();
 		
 		buttons = new ArrayList<Keybutton>();
+		
+		testWord = new WordButton(50, 150, 20, new WordButton.WordButtonListener() {
+			
+			@Override
+			public void onFinish(WordButton btn) {
+				game.screenmanager.set(new GameScreen(game), true);
+			}
+		}, "Play");
+		
+		for(Keybutton b : testWord.getButtons())
+			this.buttons.add(b);
 		
 		this.buttons.add(new Keybutton(50, 50, Input.Keys.A, false));
 		this.buttons.add(new Keybutton(150, 50, Input.Keys.B, true));
@@ -52,6 +64,8 @@ public final class StartScreen implements Screen, InputProcessor {
 		for(Keybutton b : buttons)
 			b.render(game);
 		game.spritebatch.end();
+		
+		testWord.update();
 	}
 
 	public static void prefetch(AssetManager m) {

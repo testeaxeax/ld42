@@ -76,4 +76,28 @@ public class Keybutton {
 		m.unload(TEX_PATH_UP);
 		m.unload(TEX_PATH_DOWN);
 	}
+
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public boolean isPressed() {
+		return this.state;
+	}
+	
+	public int getHeight() {
+		return this.height;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public void setPressed(boolean pressed) {
+		this.state = pressed;
+	}
 }

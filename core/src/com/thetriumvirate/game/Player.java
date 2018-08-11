@@ -59,12 +59,16 @@ public class Player {
 		for(int i = 0; i < blocks[widthindex].length; i++) {
 			if(blocks[widthindex][i] != null) {
 				heightindex1 = i;
+			}else if(position.y + height < blockedgelength * heightindex1) {
+				break;
 			}
 		}
 		if(blockin + width > blockedgelength) {
 			for(int i = 0; i < blocks[widthindex + 1].length; i++) {
 				if(blocks[widthindex + 1][i] != null) {
 						heightindex2 = i;
+				}else if(position.y + height < blockedgelength * heightindex1) {
+					break;
 				}
 			}
 		}
@@ -88,12 +92,16 @@ public class Player {
 		for(int i = 0; i < blocks[widthindex].length; i++) {
 			if(blocks[widthindex][i] != null) {
 				heightindex1 = i;
+			}else if(position.y + height < blockedgelength * heightindex1) {
+				break;
 			}
 		}
 		if(blockin + width > blockedgelength) {
 			for(int i = 0; i < blocks[widthindex + 1].length; i++) {
 				if(blocks[widthindex + 1][i] != null) {
 						heightindex2 = i;
+				}else if(position.y + height < blockedgelength * heightindex1) {
+					break;
 				}
 			}
 		}

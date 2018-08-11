@@ -12,7 +12,7 @@ public class Main extends Game {
 	public static final Color DEFAULT_FONT_COLOR = Color.WHITE;
 	// DO NOT append suffix
 	// TODO Set default font
-	public static final String RES_DEFAULT_FONT_PLATFORMINDEPENDENT = "fonts/PlayfairDisplay-Regular";
+	public static final String RES_DEFAULT_FONT_PLATFORMINDEPENDENT = "fonts/OpenSans-SemiBold";
 	public static final Random RAND = new Random();
 	
 	public final String RES_DEFAULT_FONT;

@@ -17,7 +17,7 @@ public final class DesktopFontLoader implements FontLoader {
 	private Main game = null;
 
 	@Override
-	public void load(String assetpath, int font_size, Color color) {
+	public void load(String assetpath, int font_size, Color color, String name) {
 		FreeTypeFontLoaderParameter loaderparam = new FreeTypeFontLoaderParameter();
 		FreeTypeFontParameter param = new FreeTypeFontParameter();
 		String fullassetpath = "desktop/" + assetpath + ".ttf";
@@ -29,22 +29,22 @@ public final class DesktopFontLoader implements FontLoader {
 		param.color = color;
 		loaderparam.fontFileName = fullassetpath;
 		loaderparam.fontParameters = param;
-		game.assetmanager.load(assetpath, BitmapFont.class, loaderparam);
+		game.assetmanager.load(name, BitmapFont.class, loaderparam);
 	}
 	
 	@Override
-	public void load(String assetpath, int font_size) {
-		load(assetpath, font_size, Main.DEFAULT_FONT_COLOR);
+	public void load(String assetpath, int font_size, String name) {
+		load(assetpath, font_size, Main.DEFAULT_FONT_COLOR, name);
 	}
 	
 	@Override
-	public void load(String assetpath) {
-		load(assetpath, Main.DEFAULT_FONTSIZE);
+	public void load(String assetpath, String name) {
+		load(assetpath, Main.DEFAULT_FONTSIZE, name);
 	}
 	
 	@Override
-	public void load() {
-		load(Main.RES_DEFAULT_FONT_PLATFORMINDEPENDENT);
+	public void load(String name) {
+		load(Main.RES_DEFAULT_FONT_PLATFORMINDEPENDENT, name);
 	}
 	
 	@Override

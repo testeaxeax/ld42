@@ -15,7 +15,7 @@ public class Main extends Game {
 	public static final Color DEFAULT_FONT_COLOR = Color.WHITE;
 	// DO NOT append suffix
 	// TODO Set default font
-	public static final String RES_DEFAULT_FONT_PLATFORMINDEPENDENT = "fonts/replaceme";
+	public static final String RES_DEFAULT_FONT_PLATFORMINDEPENDENT = "fonts/PlayfairDisplay-Regular";
 	public static final Random RAND = new Random();
 	
 	public final String RES_DEFAULT_FONT;
@@ -43,7 +43,7 @@ public class Main extends Game {
 		DEFAULT_FONTSIZE = (int) (SCREEN_WIDTH * 0.029296875f);
 		fontloader = fl;
 		fontloader.setGame(this);
-		RES_DEFAULT_FONT = fontloader.getFullPath(RES_DEFAULT_FONT_PLATFORMINDEPENDENT);
+		RES_DEFAULT_FONT = "df.ttf";
 	}
 	
 	// Required to trigger rendering of active screen
@@ -61,7 +61,7 @@ public class Main extends Game {
 	}
 	
 	public void loadGlobalResources() {
-		fontloader.load();
+		fontloader.load(RES_DEFAULT_FONT);
 	}
 	
 	@Override

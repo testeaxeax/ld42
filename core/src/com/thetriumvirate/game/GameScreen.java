@@ -18,7 +18,7 @@ public final class GameScreen implements Screen {
 
 	// Resource paths
 	// private static final String RES_SOMETHING = "somewhere/something";
-	private static final String KEYBLOCK_TEXTURE = "assets/graphics/keyblock.png";
+	private static final String KEYBLOCK_TEXTURE = "graphics/keyblock.png";
 	private Texture keyBlock_Texture;
 
 	private BitmapFont font;
@@ -26,7 +26,7 @@ public final class GameScreen implements Screen {
 	private Main game;
 	private OrthographicCamera cam;
 
-	private int pixelGridWidth = 40, pixelGridHeight = 30;
+	private int pixelGridWidth = 20, pixelGridHeight = 15;
 	private Keyblock[][] blocks = new Keyblock[pixelGridWidth][];
 
 	public GameScreen(Main game) {
@@ -37,9 +37,9 @@ public final class GameScreen implements Screen {
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 
-		setUpPixelGrid();
-
 		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
+		
+		setUpPixelGrid();
 	}
 
 	private void setUpPixelGrid() {
@@ -50,7 +50,7 @@ public final class GameScreen implements Screen {
 
 		// init the levels blocks here
 
-		String levelGen = "22,16";
+		String levelGen = "18,7;4:7,9";
 
 		// translate the String to the level-blocks (Just don't touch anything below ;P)
 

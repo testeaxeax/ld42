@@ -29,7 +29,7 @@ public final class DesktopFontLoader implements FontLoader {
 		param.color = color;
 		loaderparam.fontFileName = fullassetpath;
 		loaderparam.fontParameters = param;
-		game.assetmanager.load(assetpath, BitmapFont.class, loaderparam);
+		game.assetmanager.load(fullassetpath, BitmapFont.class, loaderparam);
 	}
 	
 	@Override

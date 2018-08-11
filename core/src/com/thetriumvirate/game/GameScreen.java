@@ -1,7 +1,5 @@
 package com.thetriumvirate.game;
 
-import java.awt.Font;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;

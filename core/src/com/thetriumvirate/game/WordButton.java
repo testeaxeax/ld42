@@ -6,16 +6,14 @@ import com.badlogic.gdx.Input;
 
 public class WordButton {
 	private ArrayList<Keybutton> buttons;
-	private int x, y, spacing;
+	private int spacing;
 	private WordButtonListener listener;
 	private int width, height;
 	
 	public static final int NORMAL_SPACING = 8;
 	
-	public WordButton(int x, int y, int spacing, WordButtonListener listener, String word) {
+	public WordButton(int x, int y, int spacing, WordButtonListener listener, String word, boolean middle) {
 		buttons = new ArrayList<Keybutton>();
-		this.x = x;
-		this.y = y;
 		this.spacing = spacing;
 		this.listener = listener;
 		
@@ -40,12 +38,17 @@ public class WordButton {
 			if(b.getHeight() > height)
 				height = b.getHeight();
 		}
+		
+		if(middle) {
+			x -= width / 2;
+			y -= height / 2;
+			setX(x);
+			setY(y);
+		}
 	}
-	
+	/*
 	public WordButton(int x, int y, int spacing, WordButtonListener listener, int... keycodes) {
 		buttons = new ArrayList<Keybutton>();
-		this.x = x;
-		this.y = y;
 		this.spacing = spacing;
 		this.listener = listener;
 		
@@ -56,13 +59,13 @@ public class WordButton {
 			prevX += b.getWidth() + this.spacing;
 		}
 	}
+	*/
 
 	public ArrayList<Keybutton> getButtons() {
 		return this.buttons;
 	}
 	
 	public void setX(int x) {
-		this.x = x;
 		int prevX = x;
 		for(Keybutton b : buttons) {
 			b.setX(prevX);
@@ -71,7 +74,6 @@ public class WordButton {
 	}
 	
 	public void setY(int y) {
-		this.y = y;
 		for(Keybutton b : buttons) {
 			b.setY(y);
 		}

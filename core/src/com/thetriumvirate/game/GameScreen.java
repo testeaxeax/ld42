@@ -3,6 +3,8 @@ package com.thetriumvirate.game;
 import java.awt.RenderingHints.Key;
 
 import com.badlogic.gdx.Gdx;
+
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -37,7 +39,11 @@ public final class GameScreen implements Screen, InputProcessor {
 
 	private int pixelGridWidth = 20, pixelGridHeight = 15;
 	private Keyblock[][] blocks = new Keyblock[pixelGridWidth][];
+	
+	private Keybutton[] jumpCount;
 
+	private int jumpsLeft;
+	
 	public GameScreen(Main game) {
 		this.game = game;
 		cam = new OrthographicCamera();
@@ -52,12 +58,68 @@ public final class GameScreen implements Screen, InputProcessor {
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		
-		setUpPixelGrid();
+		loadLevel();
 	}
 	
 	public Keyblock[][] getKeyblocks(){
 		return this.blocks;
 	}
+	
+	private void loadLevel() {
+		// TODO different setup for each level
+		
+		jumpsLeft = Main.RAND.nextInt(300);
+		
+		jumpCount = new Keybutton[3];
+		for(int i = 0; i < jumpCount.length; i++) {
+			jumpCount[i] = new Keybutton(CAM_WIDTH - 30 - jumpCount.length * (WordButton.NORMAL_SPACING + Keybutton.NORMAL_WIDTH) + i * (Keybutton.NORMAL_WIDTH + WordButton.NORMAL_SPACING) , CAM_HEIGHT - 30 - Keybutton.NORMAL_HEIGHT, Input.Keys.NUM_0, false);
+		}
+		
+		updateJumpCount();
+		
+		setUpPixelGrid();
+	}
+	
+	private void updateJumpCount() {
+		if(jumpsLeft < 0)
+			return;
+		
+		String number = String.valueOf(jumpsLeft);
+		if(jumpsLeft < 10) {
+			jumpCount[0].updateKeycode(Input.Keys.NUM_0);
+			jumpCount[1].updateKeycode(Input.Keys.NUM_0);
+			jumpCount[2].updateKeycode(Input.Keys.valueOf(number));
+		} else if(jumpsLeft < 100) {
+			jumpCount[0].updateKeycode(Input.Keys.NUM_0);
+			jumpCount[1].updateKeycode(Input.Keys.valueOf("" + number.charAt(0)));
+			jumpCount[2].updateKeycode(Input.Keys.valueOf("" + number.charAt(1)));
+		} else {
+			jumpCount[0].updateKeycode(Input.Keys.valueOf("" + number.charAt(0)));
+			jumpCount[1].updateKeycode(Input.Keys.valueOf("" + number.charAt(1)));
+			jumpCount[2].updateKeycode(Input.Keys.valueOf("" + number.charAt(2)));
+		}
+	}
+//	
+//	private int getKeycode(int number) {
+//		switch(number) {
+//		case 0:
+//			return Input.Keys.NUM_0;
+//		case 1:
+//			return Input.Keys.NUM_1;
+//		case 2:
+//			return Input.Keys.NUM_2;
+//		case 3:
+//			return Input.Keys.NUM_3;
+//		case 4:
+//			return Input.Keys.NUM_4;
+//		case 5:
+//			return Input.Keys.NUM_5;
+//		case 6:
+//			return Input.Keys.NUM_6;
+//		case 7:
+//			return input
+//		}
+//	}
 
 	private void setUpPixelGrid() {
 		// full init of the whole array, every entry is null so far
@@ -132,7 +194,8 @@ public final class GameScreen implements Screen, InputProcessor {
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		//GlyphLayout layout = new GlyphLayout();
+		
 		game.spritebatch.begin();
 		
 		//draw background
@@ -151,7 +214,13 @@ public final class GameScreen implements Screen, InputProcessor {
 				}
 			}
 		}
+		
+		//layout.setText(font, "Jumps left: ");
+		//font.draw(game.spritebatch, layout, CAM_WIDTH - layout.width - 30, CAM_HEIGHT - layout.height - 30);
 
+		for(Keybutton b : jumpCount)
+			b.render(game);
+		
 		game.spritebatch.end();
 	}
 
@@ -192,14 +261,28 @@ public final class GameScreen implements Screen, InputProcessor {
 	public boolean keyDown(int keycode) {
 		if(keycode > 28 && keycode < 55)
 		toggleKeys(String.valueOf(ALPHABET.charAt(keycode - 29)), true);
-		return false;
+		boolean ret = false;
+		for(Keybutton b : jumpCount) {
+			if(b.updateState(keycode, true))
+				ret = true;
+		}
+
+		jumpsLeft--;
+		updateJumpCount();
+		
+		return ret;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
 		if(keycode > 28 && keycode < 55)
 		toggleKeys(String.valueOf(ALPHABET.charAt(keycode - 29)), false);
-		return false;
+		boolean ret = false;
+		for(Keybutton b : jumpCount) {
+			if(b.updateState(keycode, false))
+				ret = true;
+		}
+		return ret;
 	}
 
 	@Override

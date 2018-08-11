@@ -12,7 +12,7 @@ public class Main extends Game {
 	public static final Color DEFAULT_FONT_COLOR = Color.WHITE;
 	// DO NOT append suffix
 	// TODO Set default font
-	public static final String RES_DEFAULT_FONT_PLATFORMINDEPENDENT = "fonts/PlayfairDisplay-Regular";
+	public static final String RES_DEFAULT_FONT_PLATFORMINDEPENDENT = "fonts/OpenSans-SemiBold";
 	public static final Random RAND = new Random();
 	
 	public final String RES_DEFAULT_FONT;
@@ -32,6 +32,10 @@ public class Main extends Game {
 	
 	public FontLoader fontloader;
 	
+	// Screen objects
+	private StartScreen mainMenu;
+	private CreditsScreen creditScreen;
+	
 	public Main(FontLoader fl) {
 		RATIO = (float) SCREEN_WIDTH / (float) SCREEN_HEIGHT;
 		// TODO Set factors
@@ -47,6 +51,18 @@ public class Main extends Game {
 	@Override
 	public void render() {
 		super.render();
+	}
+	
+	public CreditsScreen getCreditScreen() {
+		if(creditScreen == null)
+			creditScreen = new CreditsScreen(this);
+		return this.creditScreen;
+	}
+	
+	public StartScreen getMainMenu() {
+		if(mainMenu == null)
+			mainMenu = new StartScreen(this);
+		return mainMenu;
 	}
 	
 	@Override

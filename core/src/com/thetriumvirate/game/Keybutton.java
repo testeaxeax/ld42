@@ -15,6 +15,8 @@ public class Keybutton {
 	private static Texture background_pressed;
 	private static final String TEX_PATH_UP = "graphics/keyblock.png";
 	private static final String TEX_PATH_DOWN = "graphics/keyblock_down.png";
+	public static final int NORMAL_WIDTH = 50;
+	public static final int NORMAL_HEIGHT = 50;
 	private static BitmapFont font;
 
 	private boolean stateSwitching;
@@ -26,14 +28,15 @@ public class Keybutton {
 		this.keycode = keycode;
 		this.key = Input.Keys.toString(keycode);
 
-		this.width = 50;
-		this.height = 50;
+		this.width = NORMAL_WIDTH;
+		this.height = NORMAL_HEIGHT;
 		this.stateSwitching = stateSwitching;
 		this.state = false;
-
-		if (key.equalsIgnoreCase("ctrl")) {
-			this.width *= 2;
-		}
+	}
+	
+	public void updateKeycode(int keycode) {
+		this.keycode = keycode;
+		this.key = Input.Keys.toString(this.keycode);
 	}
 
 	public boolean updateState(int keycode, boolean down) {

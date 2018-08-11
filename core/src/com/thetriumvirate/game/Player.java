@@ -11,7 +11,10 @@ public class Player {
 	private static final int GRAVITATIONAL_ACCELERATION = -10;
 	private static final int MOVEMENTE_ACCELERATION = 4;
 	private static final int JUMP_SPEED = 40;
+	private static final int DOUBLE_JUMP_SPEED = 20;
 	private static final float AIR_RESISTANCE = 0.9f;
+	private static final int DEFAULT_WIDTH = 30;
+	private static final int DEFAULT_HEIGHT = 60;
 	
 	private Vector2 position;
 	private int space_remaining;
@@ -21,15 +24,19 @@ public class Player {
 	private int height;
 	private Vector2 speed;
 	private int xacceleration;
+	private int consecutivejumps;
 	private boolean startjump;
 	private boolean movingleft, movingright;
+	private boolean doublejumpallowed;
 	
-	public Player(GameScreen gamescreen, Vector2 position, int space_remaining, int width , int height) {
+	public Player(GameScreen gamescreen, Vector2 position, int space_remaining, boolean doublejumpallowed) {
 		this.position = position;
 		this.space_remaining = space_remaining;
 		this.gamescreen = gamescreen;
-		this.width = width;
-		this.height = height;
+		this.width = DEFAULT_WIDTH;
+		this.height = DEFAULT_HEIGHT;
+		this.doublejumpallowed = doublejumpallowed;
+		consecutivejumps = 0;
 		player_texture = gamescreen.getGame().assetmanager.get(RES_PLAYER_TEXTURE, Texture.class);
 	}
 	
@@ -115,8 +122,14 @@ public class Player {
 		if(position.y > blockheight) {
 			speed.y += GRAVITATIONAL_ACCELERATION * delta;
 			if(startjump) {
+				if(consecutivejumps == 0) {
+					speed.y += JUMP_SPEED;
+				}else if(consecutivejumps == 1 && doublejumpallowed) {
+					speed.y += DOUBLE_JUMP_SPEED;
+				}
 				startjump = false;
-				speed.y += JUMP_SPEED;
+				consecutivejumps++;
+				space_remaining--;
 			}
 			speed.y *= AIR_RESISTANCE * delta;
 		}
@@ -124,6 +137,20 @@ public class Player {
 			speed.y = 0;
 			position.y = blockheight;
 		}
+		
+		if(speed.y == 0) {
+			consecutivejumps = 0;
+		}
+		
+		if(space_remaining < 0) {
+			// 0 = no space left
+			gamescreen.gameOver(0);
+		}
+		if(position.y < 0) {
+			// 1 = you died
+			gamescreen.gameOver(1);
+		}
+		
 	}
 	
 	public Texture getTexture() {
@@ -176,5 +203,9 @@ public class Player {
 		}else {
 			return 0;
 		}
+	}
+	
+	public void jump() {
+		startjump = true;
 	}
 }

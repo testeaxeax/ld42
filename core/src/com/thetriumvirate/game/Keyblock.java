@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 public class Keyblock {
 
-	private static int edgeLength = 20;
+	private static int edgeLength = 40;
 	private int posX = 0, posY = 0;
 	private String letter = "ER";
-	private String ascii = "qwertzuiopasdfghjklyxcvbnm1234567890";
+	private String ascii = "QWERTZUIOPASDFGHJKLYXCVBNM";
 	private GlyphLayout layout;
 	
 	
@@ -25,10 +25,7 @@ public class Keyblock {
 		
 		//gen random char
 		letter = String.valueOf(ascii.charAt(gs.getGame().RAND.nextInt(ascii.length())));
-		
-		layout = new GlyphLayout();
-		
-		layout.setText(font, letter);
+		layout = new GlyphLayout(font, letter);
 	}
 
 

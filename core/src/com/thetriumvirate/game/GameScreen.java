@@ -24,7 +24,7 @@ public final class GameScreen implements Screen {
 	private Main game;
 	private OrthographicCamera cam;
 
-	private int pixelGridWidth = 40, pixelGridHeight = 30;
+	private int pixelGridWidth = 20, pixelGridHeight = 15;
 	private Keyblock[][] blocks = new Keyblock[pixelGridWidth][];
 
 	public GameScreen(Main game) {
@@ -38,7 +38,6 @@ public final class GameScreen implements Screen {
 		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
 		
 		setUpPixelGrid();
-
 	}
 
 	private void setUpPixelGrid() {
@@ -49,7 +48,7 @@ public final class GameScreen implements Screen {
 
 		// init the levels blocks here
 
-		String levelGen = "22,16";
+		String levelGen = "18,7;4:7,9";
 
 		// translate the String to the level-blocks (Just don't touch anything below ;P)
 

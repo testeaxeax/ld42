@@ -92,14 +92,22 @@ public final class ScreenTemplate implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean ret = false;
+		for(Keybutton b : buttons) {
+			if(b.updateState(keycode, true))
+				ret = true;
+		}
+		return ret;
 	}
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean ret = false;
+		for(Keybutton b : buttons) {
+			if(b.updateState(keycode, false))
+				ret = true;
+		}
+		return ret;
 	}
 
 	@Override

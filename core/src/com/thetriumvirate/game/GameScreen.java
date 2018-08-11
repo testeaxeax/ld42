@@ -1,7 +1,5 @@
 package com.thetriumvirate.game;
 
-import java.awt.Font;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -18,7 +16,7 @@ public final class GameScreen implements Screen {
 
 	// Resource paths
 	// private static final String RES_SOMETHING = "somewhere/something";
-	private static final String KEYBLOCK_TEXTURE = "assets/graphics/keyblock.png";
+	private static final String KEYBLOCK_TEXTURE = "graphics/keyblock.png";
 	private Texture keyBlock_Texture;
 
 	private BitmapFont font;
@@ -37,9 +35,10 @@ public final class GameScreen implements Screen {
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 
+		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
+		
 		setUpPixelGrid();
 
-		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
 	}
 
 	private void setUpPixelGrid() {

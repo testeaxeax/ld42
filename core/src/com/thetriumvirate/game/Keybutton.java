@@ -30,10 +30,6 @@ public class Keybutton {
 		this.height = 50;
 		this.stateSwitching = stateSwitching;
 		this.state = false;
-
-		if (key.equalsIgnoreCase("ctrl")) {
-			this.width *= 2;
-		}
 	}
 
 	public boolean updateState(int keycode, boolean down) {

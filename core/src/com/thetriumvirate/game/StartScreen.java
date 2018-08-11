@@ -3,7 +3,6 @@ package com.thetriumvirate.game;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -20,6 +19,7 @@ public final class StartScreen implements Screen, InputProcessor {
 	
 	private ArrayList<Keybutton> buttons;
 	private WordButton wordPlay;
+	private WordButton wordCredits;
 	
 	private Main game;
 	private OrthographicCamera cam;
@@ -32,19 +32,25 @@ public final class StartScreen implements Screen, InputProcessor {
 		
 		buttons = new ArrayList<Keybutton>();
 		
-		wordPlay = new WordButton(50, 150, WordButton.NORMAL_SPACING, new WordButton.WordButtonListener() {
+		wordPlay = new WordButton(CAM_WIDTH / 2, CAM_HEIGHT / 2, WordButton.NORMAL_SPACING, new WordButton.WordButtonListener() {
 			
 			@Override
 			public void onFinish(WordButton btn) {
 				game.screenmanager.set(new GameScreen(game), true);
 			}
-		}, "Play");
+		}, "Play", true);
 		
-		wordPlay.setX(CAM_WIDTH / 2 - wordPlay.getWidth() / 2);
-		wordPlay.setY(CAM_HEIGHT / 2 - wordPlay.getHeight() / 2);
+		addWord(wordPlay);
 		
-		for(Keybutton b : wordPlay.getButtons())
-			this.buttons.add(b);
+		wordCredits = new WordButton(CAM_WIDTH / 2, CAM_HEIGHT / 2 - 80, WordButton.NORMAL_SPACING, new WordButton.WordButtonListener() {
+			
+			@Override
+			public void onFinish(WordButton btn) {
+				game.screenmanager.set(game.getCreditScreen(), true);
+			}
+		}, "Credits", true);
+		
+		addWord(wordCredits);
 		
 		//this.buttons.add(new Keybutton(50, 50, Input.Keys.A, false));
 		//this.buttons.add(new Keybutton(150, 50, Input.Keys.B, true));
@@ -52,6 +58,16 @@ public final class StartScreen implements Screen, InputProcessor {
 		
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
+	}
+	
+	private void addWord(WordButton word) {
+		for(Keybutton b : word.getButtons())
+			addButton(b);
+	}
+	
+	private void addButton(Keybutton k) {
+		if(!this.buttons.contains(k))
+			this.buttons.add(k);
 	}
 
 	@Override
@@ -69,6 +85,7 @@ public final class StartScreen implements Screen, InputProcessor {
 		game.spritebatch.end();
 		
 		wordPlay.update();
+		wordCredits.update();
 	}
 
 	public static void prefetch(AssetManager m) {

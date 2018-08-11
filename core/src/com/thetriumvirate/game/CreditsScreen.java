@@ -1,12 +1,15 @@
 package com.thetriumvirate.game;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
-public final class CreditsScreen implements Screen {
+public final class CreditsScreen implements Screen, InputProcessor {
 	
 	private static final int CAM_WIDTH = Main.SCREEN_WIDTH;
 	private static final int CAM_HEIGHT = Main.SCREEN_HEIGHT;
@@ -17,23 +20,56 @@ public final class CreditsScreen implements Screen {
 	private Main game;
 	private OrthographicCamera cam;
 	
-	public CreditsScreen(Main game) {
+	private WordButton menu;
+	private ArrayList<Keybutton> buttons;
+	
+	public CreditsScreen(final Main game) {
 		this.game = game;
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, CAM_WIDTH, CAM_HEIGHT);
 		cam.update();
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
+	
+		buttons = new ArrayList<Keybutton>();
+		menu = new WordButton(CAM_WIDTH / 2, 100, WordButton.NORMAL_SPACING, new WordButton.WordButtonListener() {
+			
+			@Override
+			public void onFinish(WordButton btn) {
+				game.screenmanager.set(game.getMainMenu(), true);
+			}
+		}, "Menu", true);
+		
+		addWord(menu);
+	}
+	
+	private void addWord(WordButton word) {
+		for(Keybutton b : word.getButtons())
+			addButton(b);
+	}
+	
+	private void addButton(Keybutton button) {
+		if(!this.buttons.contains(button))
+			this.buttons.add(button);
 	}
 
 	@Override
 	public void show() {
-		
+		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
+		game.spritebatch.begin();
+		
+		for(Keybutton b : buttons)
+			b.render(game);
+
+		game.spritebatch.end();
+		
+		menu.update();
 	}
 
 	public static void prefetch(AssetManager m) {
@@ -64,5 +100,61 @@ public final class CreditsScreen implements Screen {
 	@Override
 	public void dispose() {
 		
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		boolean ret = false;
+		for(Keybutton b : buttons) {
+			if(b.updateState(keycode, true))
+				ret = true;
+		}
+		return ret;
+	}
+
+	@Override
+	public boolean keyUp(int keycode) {
+		boolean ret = false;
+		for(Keybutton b : buttons) {
+			if(b.updateState(keycode, false))
+				ret = true;
+		}
+		return ret;
+	}
+
+	@Override
+	public boolean keyTyped(char character) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean touchDragged(int screenX, int screenY, int pointer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean mouseMoved(int screenX, int screenY) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean scrolled(int amount) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

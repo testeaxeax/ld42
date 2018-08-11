@@ -12,7 +12,7 @@ public class WordButton {
 	
 	public static final int NORMAL_SPACING = 8;
 	
-	public WordButton(int x, int y, int spacing, WordButtonListener listener, String word) {
+	public WordButton(int x, int y, int spacing, WordButtonListener listener, String word, boolean middle) {
 		buttons = new ArrayList<Keybutton>();
 		this.spacing = spacing;
 		this.listener = listener;
@@ -38,8 +38,15 @@ public class WordButton {
 			if(b.getHeight() > height)
 				height = b.getHeight();
 		}
+		
+		if(middle) {
+			x -= width / 2;
+			y -= height / 2;
+			setX(x);
+			setY(y);
+		}
 	}
-	
+	/*
 	public WordButton(int x, int y, int spacing, WordButtonListener listener, int... keycodes) {
 		buttons = new ArrayList<Keybutton>();
 		this.spacing = spacing;
@@ -52,6 +59,7 @@ public class WordButton {
 			prevX += b.getWidth() + this.spacing;
 		}
 	}
+	*/
 
 	public ArrayList<Keybutton> getButtons() {
 		return this.buttons;

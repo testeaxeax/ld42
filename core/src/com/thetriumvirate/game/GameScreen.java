@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.math.Vector2;
 
 public final class GameScreen implements Screen, InputProcessor {
 
@@ -39,10 +40,9 @@ public final class GameScreen implements Screen, InputProcessor {
 
 	private int pixelGridWidth = 20, pixelGridHeight = 15;
 	private Keyblock[][] blocks = new Keyblock[pixelGridWidth][];
+	private Player player;
 	
 	private Keybutton[] jumpCount;
-
-	private int jumpsLeft;
 	
 	public GameScreen(Main game) {
 		this.game = game;
@@ -58,29 +58,47 @@ public final class GameScreen implements Screen, InputProcessor {
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		
-		loadLevel();
+		loadLevel(1);
 	}
 	
 	public Keyblock[][] getKeyblocks(){
 		return this.blocks;
 	}
 	
-	private void loadLevel() {
+	private void loadLevel(int level) {
 		// TODO different setup for each level
-		
-		jumpsLeft = Main.RAND.nextInt(300);
-		
 		jumpCount = new Keybutton[3];
 		for(int i = 0; i < jumpCount.length; i++) {
 			jumpCount[i] = new Keybutton(CAM_WIDTH - 30 - jumpCount.length * (WordButton.NORMAL_SPACING + Keybutton.NORMAL_WIDTH) + i * (Keybutton.NORMAL_WIDTH + WordButton.NORMAL_SPACING) , CAM_HEIGHT - 30 - Keybutton.NORMAL_HEIGHT, Input.Keys.NUM_0, false);
 		}
 		
-		updateJumpCount();
+		String gridconfig = null;
+		float startposfactorx = -1;
+		float startposfactory = -1;
+		int maxspace = -1;
+		boolean doublejumpallowed = false;
 		
-		setUpPixelGrid();
+		switch(level) {
+		// START LEVEL CONFIG
+		case 1:
+			gridconfig = "18,7;4:7,9";
+			startposfactorx = 2f;
+			startposfactory = 1.5f;
+			maxspace = 20;
+			doublejumpallowed = true;
+			break;
+		// END LEVEL CONFIG
+		default:
+			System.out.print("Error: No such level");
+			Gdx.app.exit();
+		}
+		player = new Player(this, new Vector2(startposfactorx * Keyblock.getEdgeLength(), startposfactory * Keyblock.getEdgeLength()), maxspace, doublejumpallowed);
+		updateJumpCount();
+		setUpPixelGrid(gridconfig);
 	}
 	
 	private void updateJumpCount() {
+		int jumpsLeft = player.getSpaceRemaining();
 		if(jumpsLeft < 0)
 			return;
 		
@@ -121,19 +139,15 @@ public final class GameScreen implements Screen, InputProcessor {
 //		}
 //	}
 
-	private void setUpPixelGrid() {
+	private void setUpPixelGrid(String gridconfig) {
 		// full init of the whole array, every entry is null so far
 		for (int i = 0; i < blocks.length; i++) {
 			blocks[i] = new Keyblock[pixelGridHeight];
-		}
-
-		// init the levels blocks here
-
-		String levelGen = "5:14,2:10";
+    }
 
 		// translate the String to the level-blocks (Just don't touch anything below ;P)
 
-		String[] levelGenCommands = levelGen.split(";");
+		String[] levelGenCommands = gridconfig.split(";");
 
 		for (int i = 0; i < levelGenCommands.length; i++) {
 			String[] commands = levelGenCommands[i].split(",");
@@ -225,6 +239,8 @@ public final class GameScreen implements Screen, InputProcessor {
 	}
 
 	public static void prefetch(AssetManager m) {
+		Player.prefetch(m);
+		m.load(KEYBLOCK_TEXTURE, Texture.class);
 	}
 
 	@Override
@@ -254,8 +270,10 @@ public final class GameScreen implements Screen, InputProcessor {
 	// TODO Unload all non-global resources
 	@Override
 	public void dispose() {
-
+		player.dispose();
 	}
+	// TODO Implement
+	public void gameOver(int reason) {}
 
 	@Override
 	public boolean keyDown(int keycode) {
@@ -266,11 +284,17 @@ public final class GameScreen implements Screen, InputProcessor {
 			if(b.updateState(keycode, true))
 				ret = true;
 		}
-
-		jumpsLeft--;
+		if(keycode == Input.Keys.A) {
+			player.setMovementDirection(1);
+		}else if(keycode == Input.Keys.D) {
+			player.setMovementDirection(2);
+		}
+		if(keycode == Input.Keys.SPACE) {
+			player.jump();
+		}
 		updateJumpCount();
 		
-		return ret;
+		return true;
 	}
 
 	@Override
@@ -282,7 +306,11 @@ public final class GameScreen implements Screen, InputProcessor {
 			if(b.updateState(keycode, false))
 				ret = true;
 		}
-		return ret;
+		if((keycode == Input.Keys.A && player.getMovementDirection() == 1) ||
+				(keycode == Input.Keys.B && player.getMovementDirection() == 2)) {
+			player.setMovementDirection(0);
+		}
+		return true;
 	}
 
 	@Override

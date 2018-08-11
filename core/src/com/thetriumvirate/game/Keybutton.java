@@ -13,8 +13,8 @@ public class Keybutton {
 
 	private static Texture background;
 	private static Texture background_pressed;
-	private static final String TEX_PATH_UP = "graphics/buttonbackground.png";
-	private static final String TEX_PATH_DOWN = "graphics/buttonbackground_pressed.png";
+	private static final String TEX_PATH_UP = "graphics/keyblock.png";
+	private static final String TEX_PATH_DOWN = "graphics/keyblock_down.png";
 	private static BitmapFont font;
 
 	private boolean stateSwitching;

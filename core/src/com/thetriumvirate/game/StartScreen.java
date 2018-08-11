@@ -9,6 +9,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public final class StartScreen implements Screen, InputProcessor {
 	
@@ -17,6 +20,8 @@ public final class StartScreen implements Screen, InputProcessor {
 	
 	// Resource paths
 	// private static final String RES_SOMETHING = "somewhere/something";
+	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
+	private Texture background_texture;
 	
 	private ArrayList<Keybutton> buttons;
 	private WordButton wordPlay;
@@ -49,6 +54,7 @@ public final class StartScreen implements Screen, InputProcessor {
 		//this.buttons.add(new Keybutton(50, 50, Input.Keys.A, false));
 		//this.buttons.add(new Keybutton(150, 50, Input.Keys.B, true));
 		
+		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -64,6 +70,12 @@ public final class StartScreen implements Screen, InputProcessor {
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		game.spritebatch.begin();
+		//draw background
+		game.spritebatch.draw(background_texture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
+	
+		
+		
+		
 		for(Keybutton b : buttons)
 			b.render(game);
 		game.spritebatch.end();
@@ -73,6 +85,7 @@ public final class StartScreen implements Screen, InputProcessor {
 
 	public static void prefetch(AssetManager m) {
 		Keybutton.prefetch(m);
+		m.load(BACKGROUND_TEXTURE, Texture.class);
 	}
 	
 	@Override

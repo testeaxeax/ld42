@@ -32,6 +32,9 @@ public final class GameScreen implements Screen, InputProcessor {
 	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
 	private Texture background_texture;
 
+	private static final String FONT_LITTLE = "desktop/fonts/OpenSans-SemiBold.ttf";
+	private static final String FONT_LITTLE_NAME = "desktop/fonts/OpenSans-SemiBold_little.ttf";
+	
 	private BitmapFont font;
 	private BitmapFont littleFont;
 
@@ -53,8 +56,7 @@ public final class GameScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 
 		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
-		littleFont = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
-		littleFont.getData().setScale(0.6f);
+		littleFont = game.assetmanager.easyget(game.RES_LITTLE_FONT_NAME, BitmapFont.class);
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		
@@ -239,8 +241,8 @@ public final class GameScreen implements Screen, InputProcessor {
 	}
 
 	public static void prefetch(AssetManager m) {
+
 		Player.prefetch(m);
-		m.load(KEYBLOCK_TEXTURE, Texture.class);
 	}
 
 	@Override

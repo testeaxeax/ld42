@@ -9,13 +9,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Main extends Game {
 	
 	// Globally used constants
-	public static final Color DEFAULT_FONT_COLOR = Color.WHITE;
+	public static final Color DEFAULT_FONT_COLOR = Color.BLACK;
 	// DO NOT append suffix
 	// TODO Set default font
 	public static final String RES_DEFAULT_FONT_PLATFORMINDEPENDENT = "fonts/OpenSans-SemiBold";
 	public static final Random RAND = new Random();
 	
 	public final String RES_DEFAULT_FONT;
+	public final String RES_LITTLE_FONT;
+	public final String RES_LITTLE_FONT_NAME;
 	
 	// Globally used variables
 	public static int SCREEN_HEIGHT = 800;
@@ -45,6 +47,8 @@ public class Main extends Game {
 		fontloader = fl;
 		fontloader.setGame(this);
 		RES_DEFAULT_FONT = "df.ttf";
+		RES_LITTLE_FONT = "fonts/OpenSans-SemiBold";
+		RES_LITTLE_FONT_NAME = "littleFont.ttf";
 	}
 	
 	// Required to trigger rendering of active screen
@@ -75,6 +79,8 @@ public class Main extends Game {
 	
 	public void loadGlobalResources() {
 		fontloader.load(RES_DEFAULT_FONT);
+		fontloader.load(RES_LITTLE_FONT, Keyblock.getEdgeLength()/4, RES_LITTLE_FONT_NAME);
+		
 	}
 	
 	@Override

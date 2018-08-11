@@ -14,6 +14,8 @@ public final class StartScreen implements Screen {
 	// Resource paths
 	// private static final String RES_SOMETHING = "somewhere/something";
 	
+	Keybutton btn;
+	
 	private Main game;
 	private OrthographicCamera cam;
 	
@@ -22,6 +24,9 @@ public final class StartScreen implements Screen {
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, CAM_WIDTH, CAM_HEIGHT);
 		cam.update();
+		
+		this.btn = new Keybutton(50, 50, "A");
+		
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 	}

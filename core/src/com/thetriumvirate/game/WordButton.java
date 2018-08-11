@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input;
 
 public class WordButton {
 	private ArrayList<Keybutton> buttons;
-	private int x, y, spacing;
+	private int spacing;
 	private WordButtonListener listener;
 	private int width, height;
 	
@@ -14,8 +14,6 @@ public class WordButton {
 	
 	public WordButton(int x, int y, int spacing, WordButtonListener listener, String word) {
 		buttons = new ArrayList<Keybutton>();
-		this.x = x;
-		this.y = y;
 		this.spacing = spacing;
 		this.listener = listener;
 		
@@ -44,8 +42,6 @@ public class WordButton {
 	
 	public WordButton(int x, int y, int spacing, WordButtonListener listener, int... keycodes) {
 		buttons = new ArrayList<Keybutton>();
-		this.x = x;
-		this.y = y;
 		this.spacing = spacing;
 		this.listener = listener;
 		
@@ -62,7 +58,6 @@ public class WordButton {
 	}
 	
 	public void setX(int x) {
-		this.x = x;
 		int prevX = x;
 		for(Keybutton b : buttons) {
 			b.setX(prevX);
@@ -71,7 +66,6 @@ public class WordButton {
 	}
 	
 	public void setY(int y) {
-		this.y = y;
 		for(Keybutton b : buttons) {
 			b.setY(y);
 		}

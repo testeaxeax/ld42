@@ -1,6 +1,9 @@
 package com.thetriumvirate.game;
 
+import java.awt.RenderingHints.Key;
+
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -15,13 +18,21 @@ public final class GameScreen implements Screen, InputProcessor {
 
 	private static final int CAM_WIDTH = Main.SCREEN_WIDTH;
 	private static final int CAM_HEIGHT = Main.SCREEN_HEIGHT;
+	
+	private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 	// Resource paths
 	// private static final String RES_SOMETHING = "somewhere/something";
-	private static final String KEYBLOCK_TEXTURE = "graphics/keyblock.png";
-	private Texture keyBlock_Texture;
+	private static final String TEX_PATH_UP = "graphics/keyblock.png";
+	private static final String TEX_PATH_DOWN = "graphics/keyblock_down.png";
+	private Texture keyBlock_texture_up;
+	private Texture keyBlock_texture_down;
+	
+	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
+	private Texture background_texture;
 
 	private BitmapFont font;
+	private BitmapFont littleFont;
 
 	private Main game;
 	private OrthographicCamera cam;
@@ -42,6 +53,10 @@ public final class GameScreen implements Screen, InputProcessor {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 
 		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
+		littleFont = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
+		littleFont.getData().setScale(0.6f);
+		
+		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		
 		loadLevel();
 	}
@@ -114,7 +129,7 @@ public final class GameScreen implements Screen, InputProcessor {
 
 		// init the levels blocks here
 
-		String levelGen = "18,7;4:7,9";
+		String levelGen = "5:14,2:10";
 
 		// translate the String to the level-blocks (Just don't touch anything below ;P)
 
@@ -127,7 +142,7 @@ public final class GameScreen implements Screen, InputProcessor {
 				int px = Integer.parseInt(commands[0]);
 				int py = Integer.parseInt(commands[1]);
 
-				blocks[px][py] = new Keyblock(px, py, Keyblock.getEdgeLength(), font, this);
+				blocks[px][py] = new Keyblock(px, py, Keyblock.getEdgeLength(), littleFont, this);
 			} else
 
 			if (commands[0].contains(":")) {
@@ -136,11 +151,11 @@ public final class GameScreen implements Screen, InputProcessor {
 					if (commands[1].contains(":")) {
 						String[] rangeY = commands[1].split(":");
 						for (int y = Integer.parseInt(rangeY[0]); y < Integer.parseInt(rangeY[1]); y++) {
-							blocks[x][y] = new Keyblock(x, y, Keyblock.getEdgeLength(), font, this);
+							blocks[x][y] = new Keyblock(x, y, Keyblock.getEdgeLength(), littleFont, this);
 						}
 					} else {
 						blocks[x][Integer.parseInt(commands[1])] = new Keyblock(x, Integer.parseInt(commands[1]),
-								Keyblock.getEdgeLength(), font, this);
+								Keyblock.getEdgeLength(), littleFont, this);
 					}
 				}
 			} else
@@ -150,15 +165,25 @@ public final class GameScreen implements Screen, InputProcessor {
 				for (int y = Integer.parseInt(rangeY[0]); y < Integer.parseInt(rangeY[1]); y++) {
 
 					blocks[Integer.parseInt(commands[0])][y] = new Keyblock(Integer.parseInt(commands[0]), y,
-							Keyblock.getEdgeLength(), font, this);
+							Keyblock.getEdgeLength(), littleFont, this);
 
 				}
 			}
 		}
 
 		// get keyTexture
-		keyBlock_Texture = game.assetmanager.get(KEYBLOCK_TEXTURE, Texture.class);
+		keyBlock_texture_up = game.assetmanager.get(TEX_PATH_UP, Texture.class);
+		keyBlock_texture_down = game.assetmanager.get(TEX_PATH_DOWN, Texture.class);
 
+	}
+	
+	
+	private void toggleKeys(String s, boolean press) {
+		for(int i = 0; i < blocks.length; i++) {
+			for(int j = 0; j < blocks[i].length; j++) {
+				if(blocks[i][j] != null && s.equals(blocks[i][j].getLetter()))blocks[i][j].setPressed(press);
+			}
+		}
 	}
 
 	@Override
@@ -172,17 +197,20 @@ public final class GameScreen implements Screen, InputProcessor {
 		//GlyphLayout layout = new GlyphLayout();
 		
 		game.spritebatch.begin();
+		
+		//draw background
+		game.spritebatch.draw(background_texture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 
 		// draw the blocks with letters
 		for (int i = 0; i < blocks.length; i++) {
 			for (int j = 0; j < blocks[i].length; j++) {
 				if (blocks[i][j] != null) {
-					game.spritebatch.draw(keyBlock_Texture, blocks[i][j].getPosX(), blocks[i][j].getPosY(),
+					game.spritebatch.draw(blocks[i][j].isPressed() ? keyBlock_texture_down : keyBlock_texture_up,
+							blocks[i][j].getPosX(), blocks[i][j].getPosY(),
 							Keyblock.getEdgeLength(), Keyblock.getEdgeLength());
 					GlyphLayout gl = blocks[i][j].getLayout();
-					font.draw(game.spritebatch, gl,
-							blocks[i][j].getPosX() + Keyblock.getEdgeLength() / 2 - gl.width / 2,
-							blocks[i][j].getPosY() + Keyblock.getEdgeLength() / 2 - gl.height / 2);
+					littleFont.draw(game.spritebatch, gl, blocks[i][j].getPosX() + Keyblock.getEdgeLength()/5,
+							blocks[i][j].getPosY() + Keyblock.getEdgeLength() - Keyblock.getEdgeLength()/5);
 				}
 			}
 		}
@@ -197,7 +225,6 @@ public final class GameScreen implements Screen, InputProcessor {
 	}
 
 	public static void prefetch(AssetManager m) {
-		m.load(KEYBLOCK_TEXTURE, Texture.class);
 	}
 
 	@Override
@@ -232,6 +259,8 @@ public final class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyDown(int keycode) {
+		if(keycode > 28 && keycode < 55)
+		toggleKeys(String.valueOf(ALPHABET.charAt(keycode - 29)), true);
 		boolean ret = false;
 		for(Keybutton b : jumpCount) {
 			if(b.updateState(keycode, true))
@@ -246,6 +275,8 @@ public final class GameScreen implements Screen, InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
+		if(keycode > 28 && keycode < 55)
+		toggleKeys(String.valueOf(ALPHABET.charAt(keycode - 29)), false);
 		boolean ret = false;
 		for(Keybutton b : jumpCount) {
 			if(b.updateState(keycode, false))

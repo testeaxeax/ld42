@@ -10,7 +10,7 @@ public class Keyblock {
 	private String letter = "ER";
 	private String ascii = "QWERTZUIOPASDFGHJKLYXCVBNM";
 	private GlyphLayout layout;
-	
+	private boolean pressed = false;
 	
 	
 
@@ -33,8 +33,15 @@ public class Keyblock {
 		return edgeLength;
 	}
 
+	
+	public boolean isPressed() {
+		return pressed;
+	}
 
 
+	public void setPressed(boolean pressed) {
+		this.pressed = pressed;
+	}
 
 	public int getPosX() {
 		return posX;

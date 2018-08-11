@@ -48,6 +48,7 @@ public final class SplashScreen implements Screen {
 		// TODO Replace ScreenTemplate with actual game/menu screen
 		// TODO Prefetch all resources of the actual game
 		StartScreen.prefetch(game.assetmanager);
+		GameScreen.prefetch(game.assetmanager);
 		
 		showtime = TimeUtils.millis();
 	}

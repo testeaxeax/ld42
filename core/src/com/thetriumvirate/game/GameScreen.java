@@ -213,6 +213,7 @@ public final class GameScreen implements Screen, InputProcessor {
 		//GlyphLayout layout = new GlyphLayout();
 		
 		game.spritebatch.begin();
+		System.out.println("render");
 		
 		//draw background
 		game.spritebatch.draw(background_texture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
@@ -236,6 +237,10 @@ public final class GameScreen implements Screen, InputProcessor {
 
 		for(Keybutton b : jumpCount)
 			b.render(game);
+		
+		// Render player
+		player.update(delta);
+		game.spritebatch.draw(player.getTexture(), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
 		
 		game.spritebatch.end();
 	}
@@ -275,7 +280,9 @@ public final class GameScreen implements Screen, InputProcessor {
 		player.dispose();
 	}
 	// TODO Implement
-	public void gameOver(int reason) {}
+	public void gameOver(int reason) {
+		System.out.println("gameover");
+	}
 
 	@Override
 	public boolean keyDown(int keycode) {

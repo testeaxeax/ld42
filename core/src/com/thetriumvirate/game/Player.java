@@ -45,6 +45,7 @@ public class Player {
 	}
 	
 	public void update(float delta) {
+		System.out.println("updateplayer");
 		int blockedgelength = Keyblock.getEdgeLength();
 		int widthindex = (int) position.x / blockedgelength;
 		int blockin = (int) position.x % blockedgelength;

@@ -27,8 +27,12 @@ public class Keybutton {
 		
 	}
 	
+	public static void load(AdvancedAssetManager m) {
+		background = m.get(TEX_PATH, Texture.class);
+	}
+	
 	public static void prefetch(AdvancedAssetManager m) {
-		background = m.easyget(TEX_PATH, Texture.class);
+		m.load(TEX_PATH, Texture.class);
 	}
 	
 	public static void dispose(AdvancedAssetManager m) {

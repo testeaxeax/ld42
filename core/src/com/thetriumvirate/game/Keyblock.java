@@ -27,6 +27,7 @@ public class Keyblock {
 		letter = String.valueOf(ascii.charAt(gs.getGame().RAND.nextInt(ascii.length())));
 		
 		layout = new GlyphLayout();
+		
 		layout.setText(font, letter);
 	}
 

@@ -19,7 +19,7 @@ public final class StartScreen implements Screen, InputProcessor {
 	// private static final String RES_SOMETHING = "somewhere/something";
 	
 	private ArrayList<Keybutton> buttons;
-	private WordButton testWord;
+	private WordButton wordPlay;
 	
 	private Main game;
 	private OrthographicCamera cam;
@@ -32,7 +32,7 @@ public final class StartScreen implements Screen, InputProcessor {
 		
 		buttons = new ArrayList<Keybutton>();
 		
-		testWord = new WordButton(50, 150, 20, new WordButton.WordButtonListener() {
+		wordPlay = new WordButton(50, 150, WordButton.NORMAL_SPACING, new WordButton.WordButtonListener() {
 			
 			@Override
 			public void onFinish(WordButton btn) {
@@ -40,11 +40,14 @@ public final class StartScreen implements Screen, InputProcessor {
 			}
 		}, "Play");
 		
-		for(Keybutton b : testWord.getButtons())
+		wordPlay.setX(CAM_WIDTH / 2 - wordPlay.getWidth() / 2);
+		wordPlay.setY(CAM_HEIGHT / 2 - wordPlay.getHeight() / 2);
+		
+		for(Keybutton b : wordPlay.getButtons())
 			this.buttons.add(b);
 		
-		this.buttons.add(new Keybutton(50, 50, Input.Keys.A, false));
-		this.buttons.add(new Keybutton(150, 50, Input.Keys.B, true));
+		//this.buttons.add(new Keybutton(50, 50, Input.Keys.A, false));
+		//this.buttons.add(new Keybutton(150, 50, Input.Keys.B, true));
 		
 		
 		game.spritebatch.setProjectionMatrix(cam.combined);
@@ -65,7 +68,7 @@ public final class StartScreen implements Screen, InputProcessor {
 			b.render(game);
 		game.spritebatch.end();
 		
-		testWord.update();
+		wordPlay.update();
 	}
 
 	public static void prefetch(AssetManager m) {

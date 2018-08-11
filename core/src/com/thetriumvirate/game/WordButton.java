@@ -8,6 +8,7 @@ public class WordButton {
 	private ArrayList<Keybutton> buttons;
 	private int x, y, spacing;
 	private WordButtonListener listener;
+	private int width, height;
 	
 	public static final int NORMAL_SPACING = 8;
 	
@@ -24,6 +25,20 @@ public class WordButton {
 			Keybutton b = new Keybutton(prevX, y, Input.Keys.valueOf(word.substring(i, i + 1).toUpperCase()), true); 
 			buttons.add(b);
 			prevX += b.getWidth() + this.spacing;
+		}
+		
+		width = 0;
+		for(Keybutton b : buttons) {
+			width += b.getWidth() + this.spacing;
+		}
+		
+		if(width > 0)
+			width -= this.spacing;
+		
+		height = 0;
+		for(Keybutton b : buttons) {
+			if(b.getHeight() > height)
+				height = b.getHeight();
 		}
 	}
 	
@@ -78,6 +93,15 @@ public class WordButton {
 				b.setPressed(false);
 		}
 	}
+	
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public int getHeight() {
+		return this.height;
+	}
+	
 	
 	public interface WordButtonListener{
 		public void onFinish(WordButton btn);

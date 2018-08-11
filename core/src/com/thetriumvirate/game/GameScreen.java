@@ -40,6 +40,10 @@ public final class GameScreen implements Screen {
 		setUpPixelGrid();
 
 	}
+	
+	public Keyblock[][] getKeyblocks(){
+		return this.blocks;
+	}
 
 	private void setUpPixelGrid() {
 		// full init of the whole array, every entry is null so far

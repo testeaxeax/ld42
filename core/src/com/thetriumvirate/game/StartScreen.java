@@ -25,7 +25,7 @@ public final class StartScreen implements Screen {
 		cam.setToOrtho(false, CAM_WIDTH, CAM_HEIGHT);
 		cam.update();
 		
-		this.btn = new Keybutton(50, 50, "A");
+		this.btn = new Keybutton(50, 50, "A", false);
 		
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -33,16 +33,19 @@ public final class StartScreen implements Screen {
 
 	@Override
 	public void show() {
-		
+		Keybutton.load(game);
 	}
 
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		game.spritebatch.begin();
+		btn.render(game);
+		game.spritebatch.end();
 	}
 
 	public static void prefetch(AssetManager m) {
-		
+		Keybutton.prefetch(m);
 	}
 	
 	@Override

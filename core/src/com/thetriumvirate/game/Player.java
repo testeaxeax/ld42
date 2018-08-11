@@ -43,7 +43,7 @@ public class Player {
 		int blockin = (int) position.x % blockedgelength;
 		int heightindex1 = -1;
 		int heightindex2 = -1;
-		int blockheight, blockwidth;
+		int blockheight;
 		Keyblock[][] blocks = gamescreen.getKeyblocks();
 		
 		if(movingright) {
@@ -112,7 +112,7 @@ public class Player {
 		}else {
 			blockheight = heightindex1 * blockedgelength;
 		}
-		if(position.y > height) {
+		if(position.y > blockheight) {
 			speed.y += GRAVITATIONAL_ACCELERATION * delta;
 			if(startjump) {
 				startjump = false;
@@ -120,9 +120,9 @@ public class Player {
 			}
 			speed.y *= AIR_RESISTANCE * delta;
 		}
-		if(position.y <= height) {
+		if(position.y <= blockheight) {
 			speed.y = 0;
-			position.y = height;
+			position.y = blockheight;
 		}
 	}
 	

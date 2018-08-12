@@ -6,8 +6,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.utils.Align;
 
 public final class CreditsScreen implements Screen, InputProcessor {
 	
@@ -22,6 +26,16 @@ public final class CreditsScreen implements Screen, InputProcessor {
 	
 	private WordButton menu;
 	private ArrayList<Keybutton> buttons;
+	
+	private static final String CREDITS = "Game developed for Ludum Dare 40 within 72 hours by:\n" 
+										+ "Inzenhofer Tobias\n"
+										+ "Poellinger Maximilian\n" 
+										+ "Brunner Moritz\n\n" 
+										+ "Special thanks to the following projects:\n" 
+										+ "libGDX, lwjgl, JUtils, JInput, JOrbis, Eclipse\n\n" 
+										+ "For Licenses view our Github repository or extract this file";
+	private GlyphLayout textLayout;
+	private BitmapFont font;
 	
 	public CreditsScreen(final Main game) {
 		this.game = game;
@@ -56,6 +70,11 @@ public final class CreditsScreen implements Screen, InputProcessor {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
+
+		font = game.assetmanager.get(game.RES_DEFAULT_FONT, BitmapFont.class);
+
+		this.textLayout = new GlyphLayout();
+		this.textLayout.setText(font, CREDITS, Color.BLACK, CAM_WIDTH, Align.center, true);
 	}
 
 	@Override
@@ -66,7 +85,10 @@ public final class CreditsScreen implements Screen, InputProcessor {
 		
 		for(Keybutton b : buttons)
 			b.render(game);
-
+		
+		if(textLayout != null)
+			font.draw(game.spritebatch, textLayout, 0, CAM_HEIGHT / 2 + textLayout.height / 2);
+		
 		game.spritebatch.end();
 		
 		menu.update();

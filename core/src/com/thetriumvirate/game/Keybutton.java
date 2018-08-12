@@ -33,6 +33,18 @@ public class Keybutton {
 		this.state = false;
 	}
 	
+	public Keybutton(int x, int y, int width, int height, int keycode, boolean stateSwitching) {
+		this.x = x;
+		this.y = y;
+		this.keycode = keycode;
+		this.key = Input.Keys.toString(keycode);
+
+		this.width = width;
+		this.height = height;
+		this.stateSwitching = stateSwitching;
+		this.state = false;
+	}
+	
 	public void updateKeycode(int keycode) {
 		this.keycode = keycode;
 		this.key = Input.Keys.toString(this.keycode);

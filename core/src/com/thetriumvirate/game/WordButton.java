@@ -46,6 +46,42 @@ public class WordButton {
 			setY(y);
 		}
 	}
+	
+	
+	public WordButton(int x, int y, int keyEdgeLength, int spacing, WordButtonListener listener, String word, boolean middle, boolean stateSwitching) {
+		buttons = new ArrayList<Keybutton>();
+		this.spacing = spacing;
+		this.listener = listener;
+		
+		int prevX = x;
+		for(int i = 0; i < word.length(); i++) {
+			//System.out.println(i + ": " + word.substring(i,  i + 1) + " | " + Input.Keys.valueOf(word.substring(i, i + 1)));
+			Keybutton b = new Keybutton(prevX, y, keyEdgeLength, keyEdgeLength, Input.Keys.valueOf(word.substring(i, i + 1).toUpperCase()), stateSwitching); 
+			buttons.add(b);
+			prevX += b.getWidth() + this.spacing;
+		}
+		
+		width = 0;
+		for(Keybutton b : buttons) {
+			width += b.getWidth() + this.spacing;
+		}
+		
+		if(width > 0)
+			width -= this.spacing;
+		
+		height = 0;
+		for(Keybutton b : buttons) {
+			if(b.getHeight() > height)
+				height = b.getHeight();
+		}
+		
+		if(middle) {
+			x -= width / 2;
+			y -= height / 2;
+			setX(x);
+			setY(y);
+		}
+	}
 	/*
 	public WordButton(int x, int y, int spacing, WordButtonListener listener, int... keycodes) {
 		buttons = new ArrayList<Keybutton>();

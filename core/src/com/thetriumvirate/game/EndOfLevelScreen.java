@@ -33,7 +33,6 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	private BitmapFont defaultFont;
 	
 	private GlyphLayout titleLayout;
-	private GlyphLayout leftSpaceslayout;
 	private int remaining_space;
 	
 	private Texture background_texture;
@@ -44,6 +43,9 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	private WordButton nextLevelBtn;
 	private WordButton menuBtn;
 	private ArrayList<Keybutton> buttons;
+	
+	private WordButton[] textBtns;
+	private String leftSpaceText;
 	
 	public EndOfLevelScreen(Main game, int remaining_space) {
 		this.game = game;
@@ -68,12 +70,32 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		backgroundShadeTexture = new Texture(backgroundShadePixmap);
 		backgroundShadePixmap.dispose();
 		
+		leftSpaceText = "You had " + remaining_space + " spaces left";
+		
 		initContent();
 	}
 	
 	private void initContent() {
 		titleLayout = new GlyphLayout(titleFont, "WELL DONE!");
-		leftSpaceslayout = new GlyphLayout(defaultFont, "You had " + remaining_space + " spaces left!");
+		
+		String[] words = leftSpaceText.split(" ");
+		textBtns = new WordButton[words.length];
+		int wpx = game.SCREEN_WIDTH/5, wpy = game.SCREEN_HEIGHT/2;
+		for(int i = 0; i < words.length; i++) {
+			textBtns[i] = new WordButton(wpx, wpy, i != 2 ? 40 : 60, WordButton.NORMAL_SPACING/2, new WordButton.WordButtonListener() {
+				
+				@Override
+				public void onFinish(WordButton btn) {}
+			}, words[i], false, false);
+			addWord(textBtns[i]);
+			wpx += textBtns[i].getWidth();
+		}
+		wpx = game.SCREEN_WIDTH/2 - getSentenceLength(textBtns)/2 ;
+		for(WordButton w : textBtns) {
+			w.setX(wpx);
+			wpx += w.getWidth() + textBtns[0].getButtons().get(0).getWidth()/2;
+		}
+		
 		nextLevelBtn = new WordButton(game.SCREEN_WIDTH/4*3, game.SCREEN_HEIGHT/4, WordButton.NORMAL_SPACING, new WordButtonListener() {
 			
 			@Override
@@ -104,6 +126,15 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		if(!this.buttons.contains(k))
 			this.buttons.add(k);
 	}
+	
+	private int getSentenceLength(WordButton[] words) {
+		int length = 0;
+		for(WordButton w : words) {
+			length += w.getWidth();
+		}
+		length += (words.length-1)*words[0].getButtons().get(0).getWidth()/2;
+		return length;
+	}
 
 	@Override
 	public void show() {
@@ -121,7 +152,6 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
 		titleFont.draw(game.spritebatch, titleLayout, game.SCREEN_WIDTH/2 - titleLayout.width/2, game.SCREEN_HEIGHT/4*3);
-		defaultFont.draw(game.spritebatch, leftSpaceslayout, game.SCREEN_WIDTH/2 - leftSpaceslayout.width/2, game.SCREEN_HEIGHT/4*3 - 1.4f*titleLayout.height);
 		
 		for(Keybutton b : buttons)
 			b.render(game);

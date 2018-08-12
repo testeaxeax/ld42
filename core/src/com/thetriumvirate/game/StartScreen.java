@@ -47,7 +47,10 @@ public final class StartScreen implements Screen, InputProcessor {
 			
 			@Override
 			public void onFinish(WordButton btn) {
+				for(Keybutton b : buttons)b.setPressed(false);
 				game.screenmanager.set(new GameScreen(game), true);
+				
+				
 				//for test purposes
 				//game.screenmanager.set(new EndOfLevelScreen(game, 3), true);
 			}
@@ -59,9 +62,12 @@ public final class StartScreen implements Screen, InputProcessor {
 			
 			@Override
 			public void onFinish(WordButton btn) {
+				for(Keybutton b : buttons)b.setPressed(false);
 				game.screenmanager.set(game.getCreditScreen(), true);
+				
+				
 				//for test purposes
-				//game.screenmanager.set(new GameOverScreen(game, "You ran out of space!"), true);
+				//game.screenmanager.set(new GameOverScreen(game, "You ran out of space"), true);
 			}
 		}, "Credits", true);
 		

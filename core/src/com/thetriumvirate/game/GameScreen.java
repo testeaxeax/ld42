@@ -299,14 +299,15 @@ public final class GameScreen implements Screen, InputProcessor {
 			if(b.updateState(keycode, true))
 				ret = true;
 		}
-		if(keycode == Input.Keys.A) {
+		if(keycode == Input.Keys.A || keycode == Input.Keys.LEFT) {
 			player.setMovementDirection(1);
-		}else if(keycode == Input.Keys.D) {
+		}else if(keycode == Input.Keys.D || keycode == Input.Keys.RIGHT) {
 			player.setMovementDirection(2);
 		}
 		if(keycode == Input.Keys.SPACE) {
 			player.decrementSpaceRemaining();
 			player.jump();
+			player.setPressed(true);
 		}
 		updateJumpCount();
 		
@@ -323,8 +324,13 @@ public final class GameScreen implements Screen, InputProcessor {
 				ret = true;
 		}
 		if((keycode == Input.Keys.A && player.getMovementDirection() == 1) ||
-				(keycode == Input.Keys.D && player.getMovementDirection() == 2)) {
+				(keycode == Input.Keys.D && player.getMovementDirection() == 2) ||
+				(keycode == Input.Keys.LEFT && player.getMovementDirection() == 1) ||
+				(keycode == Input.Keys.RIGHT && player.getMovementDirection() == 2)) {
 			player.setMovementDirection(0);
+		}
+		if(keycode == Input.Keys.SPACE) {
+			player.setPressed(false);
 		}
 		return true;
 	}

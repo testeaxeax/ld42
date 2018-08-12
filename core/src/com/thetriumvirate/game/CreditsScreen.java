@@ -20,6 +20,9 @@ public final class CreditsScreen implements Screen, InputProcessor {
 	private static final int CAM_WIDTH = Main.SCREEN_WIDTH;
 	private static final int CAM_HEIGHT = Main.SCREEN_HEIGHT;
 	
+	private static final String RES_MONITOR_TEXTURE = "graphics/monitor.png";
+	private Texture monitor_texture;
+	
 	// Resource paths
 	// private static final String RES_SOMETHING = "somewhere/something";
 	
@@ -32,10 +35,10 @@ public final class CreditsScreen implements Screen, InputProcessor {
 	private static final String CREDITS = "Game developed for Ludum Dare 42 within 72 hours by:\n" 
 										+ "Inzenhofer Tobias\n"
 										+ "Poellinger Maximilian\n" 
-										+ "Brunner Moritz\n\n" 
+										+ "Brunner Moritz\n\n\n" 
 										+ "Special thanks to the following projects:\n" 
 										+ "libGDX, lwjgl, JUtils, JInput, JOrbis, Eclipse\n\n" 
-										+ "For Licenses view our Github repository or extract this file";
+										/*+ "For Licenses view our Github repository or extract this file"*/;
 	private GlyphLayout textLayout;
 	private BitmapFont font;
 	
@@ -68,6 +71,7 @@ public final class CreditsScreen implements Screen, InputProcessor {
 		
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
+		monitor_texture = game.assetmanager.easyget(RES_MONITOR_TEXTURE, Texture.class);
 		
 		backgroundShadePixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 		backgroundShadePixmap.setColor(0f, 0f, 0f, 0.5f);
@@ -106,11 +110,14 @@ public final class CreditsScreen implements Screen, InputProcessor {
 		
 		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
+		game.spritebatch.draw(monitor_texture, game.SCREEN_WIDTH/2 - monitor_texture.getWidth()/2,
+											   game.SCREEN_HEIGHT/2 - monitor_texture.getHeight()/2 + 50);
+		
 		for(Keybutton b : buttons)
 			b.render(game);
 		
 		if(textLayout != null)
-			font.draw(game.spritebatch, textLayout, 0, CAM_HEIGHT / 2 + textLayout.height / 2);
+			font.draw(game.spritebatch, textLayout, 0, CAM_HEIGHT / 2 + textLayout.height / 2 + 50);
 		
 		game.spritebatch.end();
 		
@@ -118,7 +125,7 @@ public final class CreditsScreen implements Screen, InputProcessor {
 	}
 
 	public static void prefetch(AssetManager m) {
-		
+		m.load(RES_MONITOR_TEXTURE, Texture.class);
 	}
 	
 	@Override

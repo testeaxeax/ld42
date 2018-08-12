@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Player {
 
 	private static final String RES_PLAYER_TEXTURE = "graphics/player_texture.png";
+	private static final String RES_PLAYER_TEXTURE_DOWN = "graphics/player_texture_down.png";
 	// TODO Fix values
 	private static final int GRAVITATIONAL_ACCELERATION = -6000;
 	private static final int MOVEMENTE_ACCELERATION = 40;
@@ -19,6 +20,7 @@ public class Player {
 	private Vector2 position;
 	private int space_remaining;
 	private Texture player_texture;
+	private Texture player_texture_down;
 	private GameScreen gamescreen;
 	private int width;
 	private int height;
@@ -27,6 +29,8 @@ public class Player {
 	private boolean startjump;
 	private boolean movingleft, movingright;
 	private boolean doublejumpallowed;
+	
+	private boolean pressed = false;
 	
 	public Player(GameScreen gamescreen, Vector2 position, int space_remaining, boolean doublejumpallowed) {
 		this.position = position;
@@ -38,10 +42,12 @@ public class Player {
 		this.speed = new Vector2(0, 0);
 		consecutivejumps = 0;
 		player_texture = gamescreen.getGame().assetmanager.get(RES_PLAYER_TEXTURE, Texture.class);
+		player_texture_down = gamescreen.getGame().assetmanager.get(RES_PLAYER_TEXTURE_DOWN, Texture.class);
 	}
 	
 	public static void prefetch(AssetManager m) {
 		m.load(RES_PLAYER_TEXTURE, Texture.class);
+		m.load(RES_PLAYER_TEXTURE_DOWN, Texture.class);
 	}
 	
 	public void update(float delta) {
@@ -193,7 +199,7 @@ public class Player {
 	}
 	
 	public Texture getTexture() {
-		return player_texture;
+		return pressed ? player_texture_down : player_texture;
 	}
 	
 	public Vector2 getPosition() {
@@ -250,5 +256,9 @@ public class Player {
 	
 	public void jump() {
 		startjump = true;
+	}
+	
+	public void setPressed(boolean pressed) {
+		this.pressed = pressed;
 	}
 }

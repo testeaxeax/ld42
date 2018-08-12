@@ -26,6 +26,7 @@ public final class StartScreen implements Screen, InputProcessor {
 	private ArrayList<Keybutton> buttons;
 	private WordButton wordPlay;
 	private WordButton wordCredits;
+	private WordButton wordExit;
 	
 	private Main game;
 	private OrthographicCamera cam;
@@ -58,6 +59,16 @@ public final class StartScreen implements Screen, InputProcessor {
 		
 		addWord(wordCredits);
 		
+		wordExit = new WordButton(CAM_WIDTH / 2, CAM_HEIGHT / 2 - 300, WordButton.NORMAL_SPACING, new WordButton.WordButtonListener() {
+			
+			@Override
+			public void onFinish(WordButton btn) {
+				Gdx.app.exit();
+			}
+		}, "Exit", true);
+		
+		addWord(wordExit);
+		
 		//this.buttons.add(new Keybutton(50, 50, Input.Keys.A, false));
 		//this.buttons.add(new Keybutton(150, 50, Input.Keys.B, true));
 		
@@ -79,7 +90,6 @@ public final class StartScreen implements Screen, InputProcessor {
 
 	@Override
 	public void show() {
-		Keybutton.load(game);
 		Gdx.input.setInputProcessor(this);
 	}
 
@@ -99,10 +109,10 @@ public final class StartScreen implements Screen, InputProcessor {
 		
 		wordPlay.update();
 		wordCredits.update();
+		wordExit.update();
 	}
 
 	public static void prefetch(AssetManager m) {
-		Keybutton.prefetch(m);
 		m.load(BACKGROUND_TEXTURE, Texture.class);
 	}
 	

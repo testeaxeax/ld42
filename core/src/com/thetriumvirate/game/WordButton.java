@@ -10,7 +10,7 @@ public class WordButton {
 	private WordButtonListener listener;
 	private int width, height;
 	
-	public static final int NORMAL_SPACING = 8;
+	public static final int NORMAL_SPACING = 4;
 	
 	public WordButton(int x, int y, int spacing, WordButtonListener listener, String word, boolean middle) {
 		buttons = new ArrayList<Keybutton>();

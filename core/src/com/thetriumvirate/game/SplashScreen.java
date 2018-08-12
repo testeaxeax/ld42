@@ -2,12 +2,10 @@ package com.thetriumvirate.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public final class SplashScreen implements Screen {
@@ -15,7 +13,7 @@ public final class SplashScreen implements Screen {
 	private static final int CAM_WIDTH = Main.SCREEN_WIDTH;
 	private static final int CAM_HEIGHT = Main.SCREEN_HEIGHT;
 	// SplashScreen will be displayed for at least 5 seconds
-	private static final int MIN_SHOWTIME = 5000;
+	private static final int MIN_SHOWTIME = 10500;
 	
 	// Resource paths
 	private static final String RES_SPLASH = "graphics/splash.jpg";
@@ -27,6 +25,12 @@ public final class SplashScreen implements Screen {
 	// Used to center the text
 	private GlyphLayout layout;
 	private long showtime;
+	
+	private WordButton loading;
+	private int status;
+	private long lastAnimTime, curAnimTime;
+	private	boolean animDone;
+	private static int ANIM_STEP_DURATION = 300;
 
 	public SplashScreen(Main game) {
 		this.game = game;
@@ -41,6 +45,14 @@ public final class SplashScreen implements Screen {
 		// Getting all resources required for SplashScreen
 		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
 		t = game.assetmanager.easyget(RES_SPLASH, Texture.class);
+		
+		loading = new WordButton(CAM_WIDTH / 2, CAM_HEIGHT / 2, 0, new WordButton.WordButtonListener() {
+			@Override
+			public void onFinish(WordButton btn) {
+			}
+		}, "loading...", true);
+		
+		Keybutton.load(game);
 	}
 
 	@Override
@@ -52,18 +64,52 @@ public final class SplashScreen implements Screen {
 		CreditsScreen.prefetch(game.assetmanager);
 		
 		showtime = TimeUtils.millis();
+		lastAnimTime = showtime;
+		status = 0;
+		animDone = false;
 	}
 
 	@Override
 	public void render(float delta) {
-		checkprogress();
+		if(animDone)
+			checkprogress();
+		
+		if(status > loading.getButtons().size()) {
+			if(!animDone)
+				ANIM_STEP_DURATION = 200;
+			status = 7;
+			animDone = true;
+		}
+		
+		curAnimTime = TimeUtils.millis();
+		
+		if(curAnimTime - lastAnimTime > ANIM_STEP_DURATION) {
+			if(status < loading.getButtons().size() && animDone)
+				loading.getButtons().get(status).setPressed(!loading.getButtons().get(status).isPressed());
+			
+			status++;
+			lastAnimTime = curAnimTime;
+		}
+		
 		String text = "Progress: " + game.assetmanager.getProgress() * 100 + '%';
 		layout.setText(font, text);
-		final Vector2 pos = new Vector2((CAM_WIDTH / 2) - (layout.width / 2), (CAM_HEIGHT / 4) - (layout.height / 2));
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		//final Vector2 pos = new Vector2((CAM_WIDTH / 2) - (layout.width / 2), (CAM_HEIGHT / 4) - (layout.height / 2));
+		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		game.spritebatch.begin();
-		game.spritebatch.draw(t, 0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
-		font.draw(game.spritebatch, layout, pos.x, pos.y);
+		//game.spritebatch.draw(t, 0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		
+		if(animDone) {
+			for(Keybutton k : loading.getButtons())
+				k.render(game);
+		} else {
+			for(int i = 0; i < status; i++) {
+				if(i >= loading.getButtons().size())
+					continue;
+				loading.getButtons().get(i).render(game);
+			}
+		}
+		
+		//font.draw(game.spritebatch, layout, pos.x, pos.y);
 		game.spritebatch.end();
 	}
 

@@ -1,7 +1,6 @@
 package com.thetriumvirate.game;
 
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -65,15 +64,15 @@ public class Keybutton {
 	}
 
 	public static void load(Main game) {
-		background = game.assetmanager.get(TEX_PATH_UP, Texture.class);
-		background_pressed = game.assetmanager.get(TEX_PATH_DOWN, Texture.class);
-		font = game.assetmanager.get(game.RES_DEFAULT_FONT, BitmapFont.class);
+		background = game.assetmanager.easyget(TEX_PATH_UP, Texture.class);
+		background_pressed = game.assetmanager.easyget(TEX_PATH_DOWN, Texture.class);
+		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
 	}
 
-	public static void prefetch(AssetManager m) {
-		m.load(TEX_PATH_UP, Texture.class);
-		m.load(TEX_PATH_DOWN, Texture.class);
-	}
+//	public static void prefetch(AssetManager m) {
+//		m.load(TEX_PATH_UP, Texture.class);
+//		m.load(TEX_PATH_DOWN, Texture.class);
+//	}
 
 	public static void dispose(AdvancedAssetManager m) {
 		m.unload(TEX_PATH_UP);

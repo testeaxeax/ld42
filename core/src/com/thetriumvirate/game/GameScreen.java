@@ -68,8 +68,9 @@ public final class GameScreen implements Screen, InputProcessor {
 	private void loadLevel(int level) {
 		// TODO different setup for each level
 		jumpCount = new Keybutton[3];
+		int spacing = 3;
 		for(int i = 0; i < jumpCount.length; i++) {
-			jumpCount[i] = new Keybutton(CAM_WIDTH - 30 - jumpCount.length * (WordButton.NORMAL_SPACING + Keybutton.NORMAL_WIDTH) + i * (Keybutton.NORMAL_WIDTH + WordButton.NORMAL_SPACING) , CAM_HEIGHT - 30 - Keybutton.NORMAL_HEIGHT, Input.Keys.NUM_0, false);
+			jumpCount[i] = new Keybutton(CAM_WIDTH - 30 - jumpCount.length * (spacing + Keybutton.NORMAL_WIDTH) + i * (spacing + Keybutton.NORMAL_WIDTH) , CAM_HEIGHT - 30 - Keybutton.NORMAL_HEIGHT, Input.Keys.NUM_0, false);
 		}
 		
 		String gridconfig = null;

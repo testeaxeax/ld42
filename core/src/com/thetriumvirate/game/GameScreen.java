@@ -39,8 +39,11 @@ public final class GameScreen implements Screen, InputProcessor {
 	private Main game;
 	private OrthographicCamera cam;
 
-	private int pixelGridWidth = 32, pixelGridHeight = 25;
+	public int pixelGridWidth = 32, pixelGridHeight = 25;
 	private Keyblock[][] blocks = new Keyblock[pixelGridWidth][];
+	
+	private Goal goal;
+	
 	private Player player;
 	
 	private Keybutton[] jumpCount;
@@ -70,7 +73,7 @@ public final class GameScreen implements Screen, InputProcessor {
 	
 	private void loadLevel(int level) {
 		// TODO different setup for each level
-		jumpCount = new Keybutton[3];
+		jumpCount = new Keybutton[2];
 		int spacing = 3;
 		for(int i = 0; i < jumpCount.length; i++) {
 			jumpCount[i] = new Keybutton(CAM_WIDTH - 30 - jumpCount.length * (spacing + Keybutton.NORMAL_WIDTH) + i * (spacing + Keybutton.NORMAL_WIDTH) , CAM_HEIGHT - 30 - Keybutton.NORMAL_HEIGHT, Input.Keys.NUM_0, false);
@@ -81,6 +84,7 @@ public final class GameScreen implements Screen, InputProcessor {
 		float startposfactory = -1;
 		int maxspace = -1;
 		boolean doublejumpallowed = false;
+		int goalx = -1, goaly = -1;
 		
 		switch(level) {
 		// START LEVEL CONFIG
@@ -90,6 +94,8 @@ public final class GameScreen implements Screen, InputProcessor {
 			startposfactory = 15f;
 			maxspace = 20;
 			doublejumpallowed = true;
+			goalx = 25;
+			goaly = 0;
 			break;
 		// END LEVEL CONFIG
 		default:
@@ -99,6 +105,16 @@ public final class GameScreen implements Screen, InputProcessor {
 		player = new Player(this, new Vector2(startposfactorx * Keyblock.getEdgeLength(), startposfactory * Keyblock.getEdgeLength()), maxspace, doublejumpallowed);
 		updateJumpCount();
 		setUpPixelGrid(gridconfig);
+		
+		this.goal = Goal.createGoal(goalx, goaly, this, this.littleFont);
+		if(this.goal == null) {
+			System.out.println("Error: Invalid goal position!");
+			game.screenmanager.set(game.getMainMenu(), true);
+		}
+		
+		for(Keyblock b : this.goal.getBlocks()) {
+			blocks[b.getArrayPosX()][b.getArrayPosY()] = b;
+		}
 	}
 	
 	private void updateJumpCount() {
@@ -111,39 +127,12 @@ public final class GameScreen implements Screen, InputProcessor {
 		String number = String.valueOf(jumpsLeft);
 		if(jumpsLeft < 10) {
 			jumpCount[0].updateKeycode(Input.Keys.NUM_0);
-			jumpCount[1].updateKeycode(Input.Keys.NUM_0);
-			jumpCount[2].updateKeycode(Input.Keys.valueOf(number));
+			jumpCount[1].updateKeycode(Input.Keys.valueOf(number));
 		} else if(jumpsLeft < 100) {
-			jumpCount[0].updateKeycode(Input.Keys.NUM_0);
-			jumpCount[1].updateKeycode(Input.Keys.valueOf("" + number.charAt(0)));
-			jumpCount[2].updateKeycode(Input.Keys.valueOf("" + number.charAt(1)));
-		} else {
 			jumpCount[0].updateKeycode(Input.Keys.valueOf("" + number.charAt(0)));
 			jumpCount[1].updateKeycode(Input.Keys.valueOf("" + number.charAt(1)));
-			jumpCount[2].updateKeycode(Input.Keys.valueOf("" + number.charAt(2)));
 		}
 	}
-//	
-//	private int getKeycode(int number) {
-//		switch(number) {
-//		case 0:
-//			return Input.Keys.NUM_0;
-//		case 1:
-//			return Input.Keys.NUM_1;
-//		case 2:
-//			return Input.Keys.NUM_2;
-//		case 3:
-//			return Input.Keys.NUM_3;
-//		case 4:
-//			return Input.Keys.NUM_4;
-//		case 5:
-//			return Input.Keys.NUM_5;
-//		case 6:
-//			return Input.Keys.NUM_6;
-//		case 7:
-//			return input
-//		}
-//	}
 
 	private void setUpPixelGrid(String gridconfig) {
 		// full init of the whole array, every entry is null so far

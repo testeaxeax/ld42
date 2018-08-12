@@ -9,6 +9,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.utils.Align;
@@ -37,6 +39,13 @@ public final class CreditsScreen implements Screen, InputProcessor {
 	private GlyphLayout textLayout;
 	private BitmapFont font;
 	
+	
+	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
+	private Texture background_texture;
+	
+	private Pixmap backgroundShadePixmap;
+	private Texture backgroundShadeTexture;
+	
 	public CreditsScreen(final Main game) {
 		this.game = game;
 		cam = new OrthographicCamera();
@@ -55,6 +64,16 @@ public final class CreditsScreen implements Screen, InputProcessor {
 		}, "Menu", true);
 		
 		addWord(menu);
+		
+		
+		
+		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
+		
+		backgroundShadePixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+		backgroundShadePixmap.setColor(0f, 0f, 0f, 0.5f);
+		backgroundShadePixmap.fill();
+		backgroundShadeTexture = new Texture(backgroundShadePixmap);
+		backgroundShadePixmap.dispose();
 	}
 	
 	private void addWord(WordButton word) {
@@ -82,6 +101,10 @@ public final class CreditsScreen implements Screen, InputProcessor {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		game.spritebatch.begin();
+		
+		game.spritebatch.draw(background_texture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
+		
+		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
 		for(Keybutton b : buttons)
 			b.render(game);

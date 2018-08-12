@@ -9,6 +9,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,6 +28,9 @@ public final class StartScreen implements Screen, InputProcessor {
 	private WordButton wordPlay;
 	private WordButton wordCredits;
 	
+	private Pixmap backgroundShadePixmap;
+	private Texture backgroundShadeTexture;
+	
 	private Main game;
 	private OrthographicCamera cam;
 	
@@ -42,7 +46,9 @@ public final class StartScreen implements Screen, InputProcessor {
 			
 			@Override
 			public void onFinish(WordButton btn) {
-				game.screenmanager.set(new GameScreen(game), true);
+				//game.screenmanager.set(new GameScreen(game), true);
+				//for test purposes
+				game.screenmanager.set(new EndOfLevelScreen(game, 3), true);
 			}
 		}, "Play", true);
 		
@@ -52,7 +58,9 @@ public final class StartScreen implements Screen, InputProcessor {
 			
 			@Override
 			public void onFinish(WordButton btn) {
-				game.screenmanager.set(game.getCreditScreen(), true);
+				//game.screenmanager.set(game.getCreditScreen(), true);
+				//for test purposes
+				game.screenmanager.set(new GameOverScreen(game, "You ran out of space!"), true);
 			}
 		}, "Credits", true);
 		
@@ -62,6 +70,12 @@ public final class StartScreen implements Screen, InputProcessor {
 		//this.buttons.add(new Keybutton(150, 50, Input.Keys.B, true));
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
+		backgroundShadePixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+		backgroundShadePixmap.setColor(0f, 0f, 0f, 0.5f);
+		backgroundShadePixmap.fill();
+		backgroundShadeTexture = new Texture(backgroundShadePixmap);
+		backgroundShadePixmap.dispose();
+		
 		
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -90,8 +104,7 @@ public final class StartScreen implements Screen, InputProcessor {
 		//draw background
 		game.spritebatch.draw(background_texture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
-		
-		
+		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
 		for(Keybutton b : buttons)
 			b.render(game);

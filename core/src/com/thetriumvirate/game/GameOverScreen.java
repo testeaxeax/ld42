@@ -2,8 +2,6 @@ package com.thetriumvirate.game;
 
 import java.util.ArrayList;
 
-import org.omg.PortableServer.REQUEST_PROCESSING_POLICY_ID;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -16,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.thetriumvirate.game.WordButton.WordButtonListener;
 
-public final class EndOfLevelScreen implements Screen, InputProcessor{
+public class GameOverScreen  implements Screen, InputProcessor{
 	
 	private static final int CAM_WIDTH = Main.SCREEN_WIDTH;
 	private static final int CAM_HEIGHT = Main.SCREEN_HEIGHT;
@@ -33,8 +31,8 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	private BitmapFont defaultFont;
 	
 	private GlyphLayout titleLayout;
-	private GlyphLayout leftSpaceslayout;
-	private int remaining_space;
+	private GlyphLayout deathMessageLayout;
+	private String deathMessage;
 	
 	private Texture background_texture;
 	
@@ -45,7 +43,7 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	private WordButton menuBtn;
 	private ArrayList<Keybutton> buttons;
 	
-	public EndOfLevelScreen(Main game, int remaining_space) {
+	public GameOverScreen(Main game, String deathMessage) {
 		this.game = game;
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, CAM_WIDTH, CAM_HEIGHT);
@@ -55,7 +53,7 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		
 		buttons = new ArrayList<Keybutton>();
 		
-		this.remaining_space = remaining_space;
+		this.deathMessage = deathMessage;
 		
 		titleFont = game.assetmanager.easyget(game.RES_TITLE_FONT_NAME, BitmapFont.class);
 		defaultFont = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class); 
@@ -72,15 +70,15 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	}
 	
 	private void initContent() {
-		titleLayout = new GlyphLayout(titleFont, "WELL DONE!");
-		leftSpaceslayout = new GlyphLayout(defaultFont, "You had " + remaining_space + " spaces left!");
+		titleLayout = new GlyphLayout(titleFont, "You failed!");
+		deathMessageLayout = new GlyphLayout(defaultFont, deathMessage);
 		nextLevelBtn = new WordButton(game.SCREEN_WIDTH/4*3, game.SCREEN_HEIGHT/4, WordButton.NORMAL_SPACING, new WordButtonListener() {
 			
 			@Override
 			public void onFinish(WordButton btn) {
 				game.screenmanager.set(new GameScreen(game), true);
 			}
-		}, "Next", true);
+		}, "Retry", true);
 		addWord(nextLevelBtn);
 		
 		menuBtn = new WordButton(game.SCREEN_WIDTH/4, game.SCREEN_HEIGHT/4,
@@ -120,8 +118,9 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		
 		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
+		
 		titleFont.draw(game.spritebatch, titleLayout, game.SCREEN_WIDTH/2 - titleLayout.width/2, game.SCREEN_HEIGHT/4*3);
-		defaultFont.draw(game.spritebatch, leftSpaceslayout, game.SCREEN_WIDTH/2 - leftSpaceslayout.width/2, game.SCREEN_HEIGHT/4*3 - 1.4f*titleLayout.height);
+		defaultFont.draw(game.spritebatch, deathMessageLayout, game.SCREEN_WIDTH/2 - deathMessageLayout.width/2, game.SCREEN_HEIGHT/4*3 - 1.4f*titleLayout.height);
 		
 		for(Keybutton b : buttons)
 			b.render(game);

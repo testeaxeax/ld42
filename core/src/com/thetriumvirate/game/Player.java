@@ -8,10 +8,10 @@ public class Player {
 
 	private static final String RES_PLAYER_TEXTURE = "graphics/player_texture.png";
 	// TODO Fix values
-	private static final int GRAVITATIONAL_ACCELERATION = -600;
-	private static final int MOVEMENTE_ACCELERATION = 4;
-	private static final int JUMP_SPEED = 100;
-	private static final int DOUBLE_JUMP_SPEED = 20;
+	private static final int GRAVITATIONAL_ACCELERATION = -6000;
+	private static final int MOVEMENTE_ACCELERATION = 40;
+	private static final int JUMP_SPEED = 1500;
+	private static final int DOUBLE_JUMP_SPEED = 1500;
 	private static final float AIR_RESISTANCE = 0.9f;
 	private static final int DEFAULT_WIDTH = 30;
 	private static final int DEFAULT_HEIGHT = 60;
@@ -175,7 +175,6 @@ public class Player {
 			}
 			startjump = false;
 			consecutivejumps++;
-			space_remaining--;
 		}
 		
 		if(speed.y == 0) {
@@ -203,6 +202,10 @@ public class Player {
 	
 	public int getSpaceRemaining() {
 		return space_remaining;
+	}
+	
+	public void decrementSpaceRemaining() {
+		space_remaining -= 1;
 	}
 	
 	public void dispose() {

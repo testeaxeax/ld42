@@ -83,8 +83,8 @@ public final class GameScreen implements Screen, InputProcessor {
 		// START LEVEL CONFIG
 		case 1:
 			gridconfig = "18,7;4:7,9";
-			startposfactorx = 2f;
-			startposfactory = 1.5f;
+			startposfactorx = 5f;
+			startposfactory = 15f;
 			maxspace = 20;
 			doublejumpallowed = true;
 			break;
@@ -236,6 +236,10 @@ public final class GameScreen implements Screen, InputProcessor {
 		for(Keybutton b : jumpCount)
 			b.render(game);
 		
+		// Render player
+		player.update(delta);
+		game.spritebatch.draw(player.getTexture(), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
+		
 		game.spritebatch.end();
 	}
 
@@ -308,7 +312,7 @@ public final class GameScreen implements Screen, InputProcessor {
 				ret = true;
 		}
 		if((keycode == Input.Keys.A && player.getMovementDirection() == 1) ||
-				(keycode == Input.Keys.B && player.getMovementDirection() == 2)) {
+				(keycode == Input.Keys.D && player.getMovementDirection() == 2)) {
 			player.setMovementDirection(0);
 		}
 		return true;

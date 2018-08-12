@@ -31,17 +31,18 @@ public class GameOverScreen  implements Screen, InputProcessor{
 	private BitmapFont defaultFont;
 	
 	private GlyphLayout titleLayout;
-	private GlyphLayout deathMessageLayout;
-	private String deathMessage;
 	
 	private Texture background_texture;
 	
 	private Pixmap backgroundShadePixmap;
 	private Texture backgroundShadeTexture;
 	
-	private WordButton nextLevelBtn;
+	private WordButton retryBtn;
 	private WordButton menuBtn;
 	private ArrayList<Keybutton> buttons;
+	
+	private WordButton[] textBtns;
+	private String deathMessageText;;
 	
 	public GameOverScreen(Main game, String deathMessage) {
 		this.game = game;
@@ -53,7 +54,6 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		
 		buttons = new ArrayList<Keybutton>();
 		
-		this.deathMessage = deathMessage;
 		
 		titleFont = game.assetmanager.easyget(game.RES_TITLE_FONT_NAME, BitmapFont.class);
 		defaultFont = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class); 
@@ -66,20 +66,41 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		backgroundShadeTexture = new Texture(backgroundShadePixmap);
 		backgroundShadePixmap.dispose();
 		
+		deathMessageText = deathMessage;
+		
 		initContent();
 	}
 	
 	private void initContent() {
 		titleLayout = new GlyphLayout(titleFont, "You failed!");
-		deathMessageLayout = new GlyphLayout(defaultFont, deathMessage);
-		nextLevelBtn = new WordButton(game.SCREEN_WIDTH/4*3, game.SCREEN_HEIGHT/4, WordButton.NORMAL_SPACING, new WordButtonListener() {
+		
+		String[] words = deathMessageText.split(" ");
+		textBtns = new WordButton[words.length];
+		int wpx = game.SCREEN_WIDTH/5, wpy = game.SCREEN_HEIGHT/2;
+		for(int i = 0; i < words.length; i++) {
+			textBtns[i] = new WordButton(wpx, wpy, 40 , WordButton.NORMAL_SPACING/2, new WordButton.WordButtonListener() {
+				
+				@Override
+				public void onFinish(WordButton btn) {}
+			}, words[i], false, false);
+			addWord(textBtns[i]);
+			wpx += textBtns[i].getWidth();
+		}
+		wpx = game.SCREEN_WIDTH/2 - getSentenceLength(textBtns)/2 ;
+		for(WordButton w : textBtns) {
+			w.setX(wpx);
+			wpx += w.getWidth() + textBtns[0].getButtons().get(0).getWidth()/2;
+		}
+		
+		
+		retryBtn = new WordButton(game.SCREEN_WIDTH/4*3, game.SCREEN_HEIGHT/4, WordButton.NORMAL_SPACING, new WordButtonListener() {
 			
 			@Override
 			public void onFinish(WordButton btn) {
 				game.screenmanager.set(new GameScreen(game), true);
 			}
 		}, "Retry", true);
-		addWord(nextLevelBtn);
+		addWord(retryBtn);
 		
 		menuBtn = new WordButton(game.SCREEN_WIDTH/4, game.SCREEN_HEIGHT/4,
 					  WordButton.NORMAL_SPACING, new WordButtonListener() {
@@ -90,6 +111,16 @@ public class GameOverScreen  implements Screen, InputProcessor{
 			}
 		}, "Menu", true);
 		addWord(menuBtn);
+	}
+	
+	
+	private int getSentenceLength(WordButton[] words) {
+		int length = 0;
+		for(WordButton w : words) {
+			length += w.getWidth();
+		}
+		length += (words.length-1)*words[0].getButtons().get(0).getWidth()/2;
+		return length;
 	}
 	
 	
@@ -120,14 +151,14 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		
 		
 		titleFont.draw(game.spritebatch, titleLayout, game.SCREEN_WIDTH/2 - titleLayout.width/2, game.SCREEN_HEIGHT/4*3);
-		defaultFont.draw(game.spritebatch, deathMessageLayout, game.SCREEN_WIDTH/2 - deathMessageLayout.width/2, game.SCREEN_HEIGHT/4*3 - 1.4f*titleLayout.height);
+		//defaultFont.draw(game.spritebatch, deathMessageLayout, game.SCREEN_WIDTH/2 - deathMessageLayout.width/2, game.SCREEN_HEIGHT/4*3 - 1.4f*titleLayout.height);
 		
 		for(Keybutton b : buttons)
 			b.render(game);
 		
 		game.spritebatch.end();
 		
-		nextLevelBtn.update();
+		retryBtn.update();
 		menuBtn.update();
 	}
 

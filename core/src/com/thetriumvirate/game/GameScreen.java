@@ -32,8 +32,6 @@ public final class GameScreen implements Screen, InputProcessor {
 	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
 	private Texture background_texture;
 
-	private static final String FONT_LITTLE = "desktop/fonts/OpenSans-SemiBold.ttf";
-	private static final String FONT_LITTLE_NAME = "desktop/fonts/OpenSans-SemiBold_little.ttf";
 	
 	private BitmapFont font;
 	private BitmapFont littleFont;

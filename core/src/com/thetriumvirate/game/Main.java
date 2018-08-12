@@ -85,6 +85,7 @@ public class Main extends Game {
 	public void loadGlobalResources() {
 		fontloader.load(RES_DEFAULT_FONT);
 		fontloader.load(RES_FONT, Keyblock.getEdgeLength()/4, RES_LITTLE_FONT_NAME);
+		fontloader.load(RES_FONT, (int) (Keyblock.getEdgeLength()*2.5f), RES_TITLE_FONT_NAME);
 	}
 	
 	@Override

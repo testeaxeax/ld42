@@ -12,7 +12,7 @@ public class Keyblock {
 	private GlyphLayout layout;
 	private boolean pressed = false;
 	
-	
+	private int arrayPosX, arrayPosY;
 
 
 	//attention! receives the pos in the array, not the pos in the game world!
@@ -20,7 +20,8 @@ public class Keyblock {
 		this.edgeLength = edgeLength;
 		this.posX = arrayPosX * edgeLength;
 		this.posY = arrayPosY * edgeLength;
-		
+		this.arrayPosX = arrayPosX;
+		this.arrayPosY = arrayPosY;
 		
 		
 		//gen random char
@@ -28,6 +29,18 @@ public class Keyblock {
 		layout = new GlyphLayout(font, letter);
 	}
 
+	public Keyblock(int arrayPosX, int arrayPosY, int edgeLength, String letter,BitmapFont font, GameScreen gs) {
+		this.edgeLength = edgeLength;
+		this.posX = arrayPosX * edgeLength;
+		this.posY = arrayPosY * edgeLength;
+		this.arrayPosX = arrayPosX;
+		this.arrayPosY = arrayPosY;
+		
+		
+		//gen random char
+		this.letter = letter;
+		layout = new GlyphLayout(font, letter);
+	}
 
 	public static int getEdgeLength() {
 		return edgeLength;
@@ -67,6 +80,15 @@ public class Keyblock {
 		return letter;
 	}
 
+
+	public int getArrayPosX() {
+		return arrayPosX;
+	}
+
+	
+	public int getArrayPosY() {
+		return arrayPosY;
+	}
 
 	public void setLetter(String letter) {
 		this.letter = letter;

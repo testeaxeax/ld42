@@ -27,7 +27,7 @@ public final class CreditsScreen implements Screen, InputProcessor {
 	private WordButton menu;
 	private ArrayList<Keybutton> buttons;
 	
-	private static final String CREDITS = "Game developed for Ludum Dare 40 within 72 hours by:\n" 
+	private static final String CREDITS = "Game developed for Ludum Dare 42 within 72 hours by:\n" 
 										+ "Inzenhofer Tobias\n"
 										+ "Poellinger Maximilian\n" 
 										+ "Brunner Moritz\n\n" 

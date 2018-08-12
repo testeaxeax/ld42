@@ -2,7 +2,6 @@ package com.thetriumvirate.game;
 
 import java.util.ArrayList;
 
-import org.omg.PortableServer.REQUEST_PROCESSING_POLICY_ID;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -33,7 +32,6 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	private BitmapFont defaultFont;
 	
 	private GlyphLayout titleLayout;
-	private int remaining_space;
 	
 	private Texture background_texture;
 	
@@ -44,10 +42,14 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	private WordButton menuBtn;
 	private ArrayList<Keybutton> buttons;
 	
-	private WordButton[] textBtns;
+	private WordButton[] spaceLeftBtns;
+	private WordButton[] stageCompleteBtns;
 	private String leftSpaceText;
+	private String stageCompleteText;
 	
-	public EndOfLevelScreen(Main game, int remaining_space) {
+	private int completedLevel;
+	
+	public EndOfLevelScreen(Main game, int remaining_space, int level) {
 		this.game = game;
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, CAM_WIDTH, CAM_HEIGHT);
@@ -57,7 +59,6 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		
 		buttons = new ArrayList<Keybutton>();
 		
-		this.remaining_space = remaining_space;
 		
 		titleFont = game.assetmanager.easyget(game.RES_TITLE_FONT_NAME, BitmapFont.class);
 		defaultFont = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class); 
@@ -71,6 +72,9 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		backgroundShadePixmap.dispose();
 		
 		leftSpaceText = "You had " + remaining_space + " spaces left";
+		stageCompleteText = "Level " + level + " complete";
+		
+		completedLevel = level;
 		
 		initContent();
 	}
@@ -79,28 +83,48 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		titleLayout = new GlyphLayout(titleFont, "WELL DONE!");
 		
 		String[] words = leftSpaceText.split(" ");
-		textBtns = new WordButton[words.length];
-		int wpx = game.SCREEN_WIDTH/5, wpy = game.SCREEN_HEIGHT/2;
+		spaceLeftBtns = new WordButton[words.length];
+		int wpx = game.SCREEN_WIDTH/5, wpy = game.SCREEN_HEIGHT/2 - 80;
 		for(int i = 0; i < words.length; i++) {
-			textBtns[i] = new WordButton(wpx, wpy, i != 2 ? 40 : 60, WordButton.NORMAL_SPACING/2, new WordButton.WordButtonListener() {
+			spaceLeftBtns[i] = new WordButton(wpx, wpy, i != 2 ? 40 : 60, WordButton.NORMAL_SPACING/2, new WordButton.WordButtonListener() {
 				
 				@Override
 				public void onFinish(WordButton btn) {}
 			}, words[i], false, false);
-			addWord(textBtns[i]);
-			wpx += textBtns[i].getWidth();
+			addWord(spaceLeftBtns[i]);
+			//wpx += spaceLeftBtns[i].getWidth();
 		}
-		wpx = game.SCREEN_WIDTH/2 - getSentenceLength(textBtns)/2 ;
-		for(WordButton w : textBtns) {
+		wpx = game.SCREEN_WIDTH/2 - getSentenceLength(spaceLeftBtns)/2 ;
+		for(WordButton w : spaceLeftBtns) {
 			w.setX(wpx);
-			wpx += w.getWidth() + textBtns[0].getButtons().get(0).getWidth()/2;
+			wpx += w.getWidth() + spaceLeftBtns[0].getButtons().get(0).getWidth()/2;
+		}
+		
+		
+		words = stageCompleteText.split(" ");
+		stageCompleteBtns = new WordButton[words.length];
+		wpx = game.SCREEN_WIDTH/5;
+		wpy = game.SCREEN_HEIGHT/2;
+		for(int i = 0; i < words.length; i++) {
+			stageCompleteBtns[i] = new WordButton(wpx, wpy, i != 1 ? 40 : 60, WordButton.NORMAL_SPACING/2, new WordButton.WordButtonListener() {
+				
+				@Override
+				public void onFinish(WordButton btn) {}
+			}, words[i], false, false);
+			addWord(stageCompleteBtns[i]);
+			//wpx += stageCompleteBtns[i].getWidth();
+		}
+		wpx = game.SCREEN_WIDTH/2 - getSentenceLength(stageCompleteBtns)/2 ;
+		for(WordButton w : stageCompleteBtns) {
+			w.setX(wpx);
+			wpx += w.getWidth() + stageCompleteBtns[0].getButtons().get(0).getWidth()/2;
 		}
 		
 		nextLevelBtn = new WordButton(game.SCREEN_WIDTH/4*3, game.SCREEN_HEIGHT/4, WordButton.NORMAL_SPACING, new WordButtonListener() {
 			
 			@Override
 			public void onFinish(WordButton btn) {
-				game.screenmanager.set(new GameScreen(game), true);
+				game.screenmanager.set(new GameScreen(game, completedLevel+1), true);
 			}
 		}, "Next", true);
 		addWord(nextLevelBtn);

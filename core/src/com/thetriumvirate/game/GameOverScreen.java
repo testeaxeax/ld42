@@ -42,9 +42,11 @@ public class GameOverScreen  implements Screen, InputProcessor{
 	private ArrayList<Keybutton> buttons;
 	
 	private WordButton[] textBtns;
-	private String deathMessageText;;
+	private String deathMessageText;
 	
-	public GameOverScreen(Main game, String deathMessage) {
+	private int failedLevel;
+	
+	public GameOverScreen(Main game, String deathMessage, int lvl) {
 		this.game = game;
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, CAM_WIDTH, CAM_HEIGHT);
@@ -67,6 +69,8 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		backgroundShadePixmap.dispose();
 		
 		deathMessageText = deathMessage;
+		
+		failedLevel = lvl;
 		
 		initContent();
 	}
@@ -97,7 +101,7 @@ public class GameOverScreen  implements Screen, InputProcessor{
 			
 			@Override
 			public void onFinish(WordButton btn) {
-				game.screenmanager.set(new GameScreen(game), true);
+				game.screenmanager.set(new GameScreen(game, failedLevel), true);
 			}
 		}, "Retry", true);
 		addWord(retryBtn);

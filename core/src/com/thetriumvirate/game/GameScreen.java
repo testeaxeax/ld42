@@ -39,13 +39,15 @@ public final class GameScreen implements Screen, InputProcessor {
 	private Main game;
 	private OrthographicCamera cam;
 
-	private int pixelGridWidth = 20, pixelGridHeight = 15;
+	private int pixelGridWidth = 32, pixelGridHeight = 25;
 	private Keyblock[][] blocks = new Keyblock[pixelGridWidth][];
 	private Player player;
 	
 	private Keybutton[] jumpCount;
 	
-	public GameScreen(Main game) {
+	private int currentLevel;
+	
+	public GameScreen(Main game, int lvl) {
 		this.game = game;
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, CAM_WIDTH, CAM_HEIGHT);
@@ -58,7 +60,8 @@ public final class GameScreen implements Screen, InputProcessor {
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		
-		loadLevel(1);
+		this.currentLevel = lvl;
+		loadLevel(currentLevel);
 	}
 	
 	public Keyblock[][] getKeyblocks(){
@@ -82,7 +85,7 @@ public final class GameScreen implements Screen, InputProcessor {
 		switch(level) {
 		// START LEVEL CONFIG
 		case 1:
-			gridconfig = "18,7;4:7,9";
+			gridconfig = "0:32,0;0,1:25;31,1:25";
 			startposfactorx = 5f;
 			startposfactory = 15f;
 			maxspace = 20;
@@ -100,8 +103,10 @@ public final class GameScreen implements Screen, InputProcessor {
 	
 	private void updateJumpCount() {
 		int jumpsLeft = player.getSpaceRemaining();
-		if(jumpsLeft < 0)
+		if(jumpsLeft < 0) {
+			
 			return;
+		}
 		
 		String number = String.valueOf(jumpsLeft);
 		if(jumpsLeft < 10) {
@@ -278,7 +283,12 @@ public final class GameScreen implements Screen, InputProcessor {
 		player.dispose();
 	}
 	// TODO Implement
-	public void gameOver(int reason) {}
+	public void gameOver(int reason) {
+		switch(reason) {
+			case(0):game.screenmanager.set(new GameOverScreen(game, "You ran out of space", currentLevel), true); break;
+			case(1):game.screenmanager.set(new GameOverScreen(game, "You fell out of the world", currentLevel), true); break;
+		}
+	}
 
 	@Override
 	public boolean keyDown(int keycode) {
@@ -295,6 +305,7 @@ public final class GameScreen implements Screen, InputProcessor {
 			player.setMovementDirection(2);
 		}
 		if(keycode == Input.Keys.SPACE) {
+			player.decrementSpaceRemaining();
 			player.jump();
 		}
 		updateJumpCount();

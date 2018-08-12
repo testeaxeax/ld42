@@ -48,11 +48,11 @@ public final class StartScreen implements Screen, InputProcessor {
 			@Override
 			public void onFinish(WordButton btn) {
 				for(Keybutton b : buttons)b.setPressed(false);
-				game.screenmanager.set(new GameScreen(game), true);
+				game.screenmanager.set(new GameScreen(game, 1), true);
 				
 				
 				//for test purposes
-				//game.screenmanager.set(new EndOfLevelScreen(game, 3), true);
+				//game.screenmanager.set(new EndOfLevelScreen(game, 3, 0),  true);
 			}
 		}, "Play", true);
 		

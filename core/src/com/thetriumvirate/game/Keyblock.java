@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 public class Keyblock {
 
-	private static int edgeLength = 40;
+	private static int edgeLength = 32;
 	private int posX = 0, posY = 0;
 	private String letter = "ER";
 	private String ascii = "QWERTZUIOPASDFGHJKLYXCVBNM";

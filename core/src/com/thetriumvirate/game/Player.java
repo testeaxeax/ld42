@@ -188,7 +188,7 @@ public class Player {
 						if(endoflevel) {
 							playerleftxboundary = (int) position.x;
 							playerrightxboundary = playerleftxboundary + width;
-							if(playerleftxboundary > leftxboundary && playerrightxboundary < rightxboundary) {
+							if(playerleftxboundary >= leftxboundary && playerrightxboundary <= rightxboundary) {
 								gamescreen.endOfLevel();
 							}
 						}

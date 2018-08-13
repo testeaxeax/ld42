@@ -31,6 +31,8 @@ public final class StartScreen implements Screen, InputProcessor {
 	private Pixmap backgroundShadePixmap;
 	private Texture backgroundShadeTexture;
 	
+	private InfoMonitor typeAdvice;
+	
 	private Main game;
 	private OrthographicCamera cam;
 	
@@ -92,6 +94,8 @@ public final class StartScreen implements Screen, InputProcessor {
 		backgroundShadeTexture = new Texture(backgroundShadePixmap);
 		backgroundShadePixmap.dispose();
 		
+		typeAdvice = new InfoMonitor(50, CAM_HEIGHT/2 - 75, 250, 150, "Type \n P-L-A-Y \n to start the game!", this.game);
+		
 		
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -122,8 +126,11 @@ public final class StartScreen implements Screen, InputProcessor {
 		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
 		
+		
 		for(Keybutton b : buttons)
 			b.render(game);
+		
+		typeAdvice.render(game);
 		game.spritebatch.end();
 		
 		wordPlay.update();

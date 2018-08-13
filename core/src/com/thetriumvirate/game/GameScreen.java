@@ -55,6 +55,7 @@ public final class GameScreen implements Screen, InputProcessor {
 	private Keybutton[] jumpCount;
 	
 	private int currentLevel;
+	private static final int LAST_LEVEL = 1;
 	
 	private boolean showTutorial = false;
 	private InfoMonitor[] tutorialMonitors;
@@ -298,7 +299,7 @@ public final class GameScreen implements Screen, InputProcessor {
 			game.spritebatch.draw(new Texture(shadepixmap), 0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
 			shadepixmap.dispose();
 			if(shadefactor == SHADE_TARGET) {
-				game.screenmanager.set(new EndOfLevelScreen(game, player.getSpaceRemaining(), currentLevel), true);
+				game.screenmanager.set(new EndOfLevelScreen(game, player.getSpaceRemaining(), currentLevel, LAST_LEVEL), true);
 			}
 		}
 		

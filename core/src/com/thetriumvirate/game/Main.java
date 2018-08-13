@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Main extends Game {
+	//!! DEBUG MODE !! DON'T FORGET TO CHANGE IT TO FALSE BEFORE RELEASE
+	public static boolean DEBUG = false;
 	
 	// Globally used constants
 	public static final Color DEFAULT_FONT_COLOR = Color.BLACK;

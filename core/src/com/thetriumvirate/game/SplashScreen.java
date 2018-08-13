@@ -14,7 +14,7 @@ public final class SplashScreen implements Screen {
 	private static final int CAM_WIDTH = Main.SCREEN_WIDTH;
 	private static final int CAM_HEIGHT = Main.SCREEN_HEIGHT;
 	// SplashScreen will be displayed for at least 5 seconds
-	private static final int MIN_SHOWTIME = 1;
+	private static final int MIN_SHOWTIME = 5000;
 	
 	// Resource paths
 	private static final String RES_SPLASH = "graphics/splash.jpg";
@@ -34,7 +34,7 @@ public final class SplashScreen implements Screen {
 	private int status;
 	private long lastAnimTime, curAnimTime;
 	private	boolean animDone;
-	private static int ANIM_STEP_DURATION = 300;
+	private static int ANIM_STEP_DURATION = 130;
 	
 	private int screenBlockWidth = 32, screenBlockHeight = 25;
 	private Keyblock[][] backgroundBlocks;
@@ -107,7 +107,7 @@ public final class SplashScreen implements Screen {
 		
 		if(status > loading.getButtons().size()) {
 			if(!animDone)
-				ANIM_STEP_DURATION = 200;
+				ANIM_STEP_DURATION *= 5/2;
 			status = 7;
 			animDone = true;
 		}

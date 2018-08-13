@@ -45,7 +45,7 @@ public final class GameScreen implements Screen, InputProcessor {
 	private Main game;
 	private OrthographicCamera cam;
 
-	public int pixelGridWidth = 33, pixelGridHeight = 25;
+	public int pixelGridWidth = 33, pixelGridHeight = 26;
 	private Keyblock[][] blocks = new Keyblock[pixelGridWidth][];
 	
 	private Goal goal;
@@ -55,7 +55,7 @@ public final class GameScreen implements Screen, InputProcessor {
 	private Keybutton[] jumpCount;
 	
 	private int currentLevel;
-	private static final int LAST_LEVEL = 1;
+	private static final int LAST_LEVEL = 2;
 	
 	private boolean showTutorial = false;
 	private InfoMonitor[] tutorialMonitors;
@@ -103,6 +103,9 @@ public final class GameScreen implements Screen, InputProcessor {
 		boolean doublejumpallowed = false;
 		int goalx = -1, goaly = -1;
 		
+		// Border left, bottom and right outside
+		final String border = "0:32,0;0,0:25;32,0:24;0:32,25;";
+		
 		switch(level) {
 		// START LEVEL CONFIG
 		case 1:
@@ -119,6 +122,28 @@ public final class GameScreen implements Screen, InputProcessor {
 			goalx = 31;
 			goaly = 0;
 			showTutorial = true;
+			break;
+		case 2:
+			// mittel - schwer
+			gridconfig = border 
+						+ "31,0:20;"
+						+ "6,1;7,1:4;"
+						+ "12:15,1:4;"
+						+ "20:24,1:5;"
+						+ "29:31,7;"
+						+ "1:16,10;21:24,10;"
+						+ "21:23,11:18;23,11:17;24,11:16;25,12:15;26,12;"
+						+ "10:16,11:15;8:10,11:14;6:8,11:13;4:6,11;"
+						+ "1,15;"
+						+ "4:16,18:21;4:25,20;"
+						+ "30,21";
+			startposfactorx = 2f;
+			startposfactory = 2f;
+			maxspace = 20;
+			doublejumpallowed = true;
+			goalx = 31;
+			goaly = 20;
+			showTutorial = false;
 			break;
 		// END LEVEL CONFIG
 		default:

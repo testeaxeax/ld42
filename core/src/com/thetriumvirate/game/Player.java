@@ -29,6 +29,7 @@ public class Player {
 	private boolean startjump;
 	private boolean movingleft, movingright;
 	private boolean doublejumpallowed;
+	private boolean freeze;
 	
 	private boolean pressed = false;
 	
@@ -51,6 +52,9 @@ public class Player {
 	}
 	
 	public void update(float delta) {
+		if(freeze) {
+			return;
+		}
 		int blockedgelength = Keyblock.getEdgeLength();
 		Keyblock[][] blocks = gamescreen.getKeyblocks();
 		
@@ -92,6 +96,7 @@ public class Player {
 					int yindex = ystartindex + e;
 					if(blocks[xindex][yindex] != null) {
 						boolean xcollision, ycollision;
+						boolean endoflevel = false;
 						int leftxboundary = xindex * blockedgelength;
 						int rightxboundary = leftxboundary + blockedgelength;
 						int loweryboundary = yindex * blockedgelength;
@@ -147,6 +152,9 @@ public class Player {
 								// Player is on top of something
 								position.y = (yindex + 1) * blockedgelength;
 								speed.y = 0;
+								if(blocks[xindex][yindex].getLetter() == "ALT") {
+									endoflevel = true;
+								}
 							}
 						}else if(ydirection == 1) {
 							if(previousplayerrightxboundary > leftxboundary && previousplayerleftxboundary < rightxboundary) {
@@ -172,6 +180,14 @@ public class Player {
 								// Player is on the right side of something
 								position.x = (xindex + 1) * blockedgelength;
 								speed.x = 0;
+							}
+						}
+						
+						if(endoflevel) {
+							playerleftxboundary = (int) position.x;
+							playerrightxboundary = playerleftxboundary + width;
+							if(playerleftxboundary > leftxboundary && playerrightxboundary < rightxboundary) {
+								gamescreen.endOfLevel();
 							}
 						}
 					}
@@ -266,5 +282,13 @@ public class Player {
 	
 	public void setPressed(boolean pressed) {
 		this.pressed = pressed;
+	}
+	
+	public void setFreeze(boolean freeze) {
+		this.freeze = freeze;
+	}
+	
+	public boolean getFreeze() {
+		return freeze;
 	}
 }

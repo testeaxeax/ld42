@@ -56,7 +56,7 @@ public final class GameScreen implements Screen, InputProcessor {
 	private Keybutton[] jumpCount;
 	
 	private int currentLevel;
-	private static final int LAST_LEVEL = 3;
+	private static final int LAST_LEVEL = 4;
 	
 	private boolean showTutorial = false;
 	private InfoMonitor[] tutorialMonitors;
@@ -124,7 +124,27 @@ public final class GameScreen implements Screen, InputProcessor {
 			goaly = 0;
 			showTutorial = true;
 			break;
+			
 		case 2:
+			gridconfig = "0:6,0;"
+					+ "31,0:10;"
+					+ "5,1;"
+					+ "7,3;"
+					+ "10,5;"
+					+ "14,7;"
+					+ "19,10;"
+					+ "25,11;"
+					+ "30,9;";
+			startposfactorx = 2f;
+			startposfactory = 2f;
+			maxspace = 10;
+			doublejumpallowed = true;
+			goalx = 31;
+			goaly = 10;
+			showTutorial = false;
+			break;
+			
+		case 3:
 			// mittel - schwer
 			gridconfig = border 
 						+ "31,0:20;"
@@ -146,7 +166,7 @@ public final class GameScreen implements Screen, InputProcessor {
 			showTutorial = false;
 			break;
 			
-    case 3:
+    case 4:
 		gridconfig = "1:3,2;"
 				+ "0,0:25;"
 				+ "31,0:15;"

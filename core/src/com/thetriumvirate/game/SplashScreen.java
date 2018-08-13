@@ -93,6 +93,7 @@ public final class SplashScreen implements Screen {
 		GameScreen.prefetch(game.assetmanager);
 		CreditsScreen.prefetch(game.assetmanager);
 		EndOfLevelScreen.prefetch(game.assetmanager);
+		GameOverScreen.prefetch(game.assetmanager);
 		
 		showtime = TimeUtils.millis();
 		lastAnimTime = showtime;

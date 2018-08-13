@@ -1,13 +1,11 @@
 package com.thetriumvirate.game;
 
-import java.awt.RenderingHints.Key;
-
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -33,6 +31,8 @@ public final class GameScreen implements Screen, InputProcessor {
 	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
 	private Texture background_texture;
 
+	
+	
 	
 	private BitmapFont font;
 	private BitmapFont littleFont;
@@ -72,6 +72,8 @@ public final class GameScreen implements Screen, InputProcessor {
 		littleFont = game.assetmanager.easyget(game.RES_LITTLE_FONT_NAME, BitmapFont.class);
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
+		
+		
 		
 		setUpTutorialMonitors();
 		
@@ -304,7 +306,6 @@ public final class GameScreen implements Screen, InputProcessor {
 	}
 
 	public static void prefetch(AssetManager m) {
-
 		Player.prefetch(m);
 	}
 
@@ -347,7 +348,6 @@ public final class GameScreen implements Screen, InputProcessor {
 	
 	public void endOfLevel() {
 		player.setFreeze(true);
-		System.out.println("EOL");
 		fadeout = true;
 	}
 

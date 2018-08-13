@@ -136,6 +136,7 @@ public final class StartScreen implements Screen, InputProcessor {
 	public void show() {
 		Gdx.input.setInputProcessor(this);
 		backgroundMusic.setLooping(true);
+		backgroundMusic.setVolume(0.6f);
 		backgroundMusic.play();
 	}
 

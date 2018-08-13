@@ -9,11 +9,11 @@ public class Player {
 	private static final String RES_PLAYER_TEXTURE = "graphics/player_texture.png";
 	private static final String RES_PLAYER_TEXTURE_DOWN = "graphics/player_texture_down.png";
 	// TODO Fix values
-	private static final int GRAVITATIONAL_ACCELERATION = -6000;
-	private static final int MOVEMENTE_ACCELERATION = 40;
-	private static final int JUMP_SPEED = 1500;
-	private static final int DOUBLE_JUMP_SPEED = 1500;
-	private static final float AIR_RESISTANCE = 0.9f;
+	private static final float GRAVITATIONAL_ACCELERATION = -50;
+	private static final float MOVEMENTE_ACCELERATION = 50;
+	private static final float JUMP_SPEED = 100;
+	private static final float DOUBLE_JUMP_SPEED = 100;
+	private static final float AIR_RESISTANCE = 0.5f;
 	private static final int DEFAULT_WIDTH = 30;
 	private static final int DEFAULT_HEIGHT = 60;
 	
@@ -52,127 +52,133 @@ public class Player {
 	
 	public void update(float delta) {
 		int blockedgelength = Keyblock.getEdgeLength();
-		int leftblockwidthindex = ( (int) position.x) / blockedgelength;
-		int blockin = ( (int) position.x) % blockedgelength;
-		int leftblockheightindex = -1;
-		int rightblockheightindex = -1;
-		int maxblockheight = -1;
 		Keyblock[][] blocks = gamescreen.getKeyblocks();
 		
 		if(movingright) {
-			speed.x += MOVEMENTE_ACCELERATION;
+			speed.x += MOVEMENTE_ACCELERATION * delta;
 		}else if(movingleft) {
-			speed.x -= MOVEMENTE_ACCELERATION;
+			speed.x -= MOVEMENTE_ACCELERATION * delta;
 		}
-		speed.x *= AIR_RESISTANCE;
+		speed.x *= 1 - ((1 - AIR_RESISTANCE) * delta);
+		// Gravity
+		speed.y += GRAVITATIONAL_ACCELERATION * delta;
+		speed.y *= 1 - ((1 - AIR_RESISTANCE) * delta);
+		
 		// Updating x-coordinate
+		Vector2 previousposition = new Vector2(position);
 		position.x += speed.x * delta;
-		for(int i = 0; i < blocks[leftblockwidthindex].length; i++) {
-			if(blocks[leftblockwidthindex][i] != null) {
-				leftblockheightindex = i;
-			}else if(position.y + height < blockedgelength * leftblockheightindex) {
-				break;
-			}
-		}
-		if(blockin + width > blockedgelength) {
-			for(int i = 0; i < blocks[leftblockwidthindex + 1].length; i++) {
-				if(blocks[leftblockwidthindex + 1][i] != null) {
-						rightblockheightindex = i;
-				}else if(position.y + height < blockedgelength * leftblockheightindex) {
-					break;
-				}
-			}
-		}
-		
-		int leftblockheight = (leftblockheightindex + 1) * blockedgelength;
-		int rightblockheight = (rightblockheightindex + 1) * blockedgelength;
-		
-		// Checking for collision in x-direction
-		// FIXME ugly
-		boolean left = false;
-		boolean right = false;
-		float previousxpos = position.x - speed.x * delta;
-		if(position.x < (leftblockwidthindex + 1) * blockedgelength && leftblockheightindex > rightblockheightindex && previousxpos > leftblockwidthindex * blockedgelength
-				&& position.y < leftblockheight && position.y + height > leftblockheightindex * blockedgelength) {
-			left = true;
-		}
-		else if(position.x < (leftblockwidthindex + 1) * blockedgelength && rightblockheightindex > leftblockheightindex && previousxpos < (leftblockwidthindex + 1) * blockedgelength
-				&& position.y < rightblockheight && position.y + height > rightblockheightindex * blockedgelength) {
-			right = true;
-		}
-		// Player's left/right side
-		if(left) {
-			speed.x = 0;
-			position.x = (leftblockwidthindex + 1) * blockedgelength;
-		}
-		if(right) {
-			speed.x = 0;
-			position.x = (leftblockwidthindex + 1) * blockedgelength - width + 1;
-		}
-		
-		// Updating y-coordinate
 		position.y += speed.y * delta;
 		
-		// Updating values
-		leftblockwidthindex = (int) position.x / blockedgelength;
-		blockin = (int) position.x % blockedgelength;
-		leftblockheightindex = -1;
-		rightblockheightindex = -1;
+		int playerleftxboundary = (int) position.x;
+		int playerrightxboundary = playerleftxboundary + width;
+		int playerloweryboundary = (int) position.y;
+		int playerupperyboundary = playerloweryboundary + height;
+		
+		int previousplayerleftxboundary = (int) previousposition.x;
+		int previousplayerrightxboundary = previousplayerleftxboundary + width;
+		int previousplayerloweryboundary = (int) previousposition.y;
+		int previousplayerupperyboundary = previousplayerloweryboundary + height;
 		
 		
+		int ystartindex = ((int) position.y + height) / blockedgelength;
+		int yendindex = ((int) position.y) / blockedgelength;
+		int xstartindex = ((int) position.x) / blockedgelength;
+		int xendindex = ((int) position.x + width) / blockedgelength;
 		
-		for(int i = 0; i < blocks[leftblockwidthindex].length; i++) {
-			if(position.y > i * blockedgelength || leftblockheightindex != -1){
-				if(blocks[leftblockwidthindex][i] != null) {
-					leftblockheightindex = i;
-				}else if(position.y + height < blockedgelength * leftblockheightindex) {
-					break;
-				}
-			}
-		}
-		if(blockin + width > blockedgelength) {
-			for(int i = 0; i < blocks[leftblockwidthindex + 1].length; i++) {
-				if(position.y > i * blockedgelength || rightblockheightindex != -1){
-					if(blocks[leftblockwidthindex + 1][i] != null) {
-						rightblockheightindex = i;
-					}else if(position.y + height < blockedgelength * leftblockheightindex) {
-						break;
+		for(int i = 0; i <= xendindex - xstartindex; i++) {
+			int xindex = xstartindex + i;
+			if(blocks[xindex] != null) {
+				for(int e = 0; e >= yendindex - ystartindex; e--) {
+					int yindex = ystartindex + e;
+					if(blocks[xindex][yindex] != null) {
+						boolean xcollision, ycollision;
+						int leftxboundary = xindex * blockedgelength;
+						int rightxboundary = leftxboundary + blockedgelength;
+						int loweryboundary = yindex * blockedgelength;
+						int upperyboundary = loweryboundary + blockedgelength;
+					
+						// Checking in x-direction
+						if(playerrightxboundary <= leftxboundary) {
+							xcollision = false;
+						}
+						else if(playerleftxboundary >= rightxboundary) {
+							xcollision = false;
+						}else {
+							xcollision = true;
+						}
+					
+						// Checking in y-direction
+						if(playerloweryboundary >= upperyboundary) {
+							ycollision = false;
+						}
+						else if(playerupperyboundary <= loweryboundary) {
+							ycollision = false;
+						}else {
+							ycollision = true;
+						}
+					
+						// left = 0, right = 1, no collision = -1
+						int xdirection = -1;
+						// top = 0, bottom = 1, no collision = -1
+						int ydirection = -1;
+					
+						// Checking x direction
+						if(xcollision) {
+							if(previousplayerrightxboundary <= leftxboundary) {
+								xdirection = 0;
+							}
+							if(previousplayerleftxboundary >= rightxboundary) {
+								xdirection = 1;
+							}
+						}
+					
+						// Checking y direction
+						if(ycollision) {
+							if(previousplayerloweryboundary >= upperyboundary) {
+								ydirection = 0;
+							}
+							if(previousplayerupperyboundary <= loweryboundary) {
+								ydirection = 1;
+							}
+						}
+					
+						if(ydirection == 0) {
+							if(previousplayerrightxboundary > leftxboundary && previousplayerleftxboundary < rightxboundary) {
+								// Player is on top of something
+								position.y = (yindex + 1) * blockedgelength;
+								speed.y = 0;
+							}
+						}else if(ydirection == 1) {
+							if(previousplayerrightxboundary > leftxboundary && previousplayerleftxboundary < rightxboundary) {
+								// Player is jumping against something from below
+								position.y = yindex * blockedgelength - height;
+								speed.y = 0;
+							}
+						}
+						
+						// Update y-values
+						playerloweryboundary = (int) position.y;
+						playerupperyboundary = playerloweryboundary + height;
+					
+						if(xdirection == 0) {
+							// FIXME seems like it needs the + 2 to counteract float rounding
+							if(playerloweryboundary + 2 < upperyboundary && playerupperyboundary - 2 > loweryboundary) {
+								// Player is on the left side of something
+								position.x = xindex * blockedgelength - width;
+								speed.x = 0;
+							}
+						}else if(xdirection == 1) {
+							if(playerloweryboundary + 2 < upperyboundary && playerupperyboundary - 2 > loweryboundary) {
+								// Player is on the right side of something
+								position.x = (xindex + 1) * blockedgelength;
+								speed.x = 0;
+							}
+						}
 					}
 				}
 			}
 		}
-		
-		leftblockheight = (leftblockheightindex + 1) * blockedgelength;
-		rightblockheight = (rightblockheightindex + 1) * blockedgelength;
-		
-		// Checking for collision in y-direction
-		if(leftblockheightindex < rightblockheightindex) {
-			maxblockheight = rightblockheight;
-		}else {
-			maxblockheight = leftblockheight;
-		}
-		if(position.y > maxblockheight || (leftblockheightindex == -1 && rightblockheightindex == -1)) {
-			speed.y += GRAVITATIONAL_ACCELERATION * delta;
-			speed.y *= AIR_RESISTANCE;
-		}
-		// FIXME ugly
-		boolean yreset = false;
-		//float previousxpos = position.x - speed.x * delta;
-		float previousypos = position.y - speed.y * delta;
-		if(position.y < leftblockheight && previousypos > leftblockheight && leftblockheightindex == rightblockheightindex) {
-			yreset = true;
-		}
-		else if(position.y < leftblockheight && leftblockheightindex > rightblockheightindex && previousypos > leftblockheight) {
-			yreset = true;
-		}
-		else if(position.y < rightblockheight && rightblockheightindex > leftblockheightindex && previousypos > rightblockheight) {
-			yreset = true;
-		}
-		if(yreset) {
-			speed.y = 0;
-			position.y = maxblockheight;
-		}
-		
+
 		if(startjump) {
 			if(consecutivejumps == 0) {
 				speed.y += JUMP_SPEED;

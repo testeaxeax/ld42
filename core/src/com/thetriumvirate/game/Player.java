@@ -13,8 +13,8 @@ public class Player {
 	// TODO Fix values
 	private static final float GRAVITATIONAL_ACCELERATION = Main.DEBUG ? -50 : -800;
 	private static final float MOVEMENT_ACCELERATION = Main.DEBUG ? 50 : 800;
-	private static final float JUMP_SPEED = Main.DEBUG ? 100 : 300;
-	private static final float DOUBLE_JUMP_SPEED = Main.DEBUG ? 100 : 230;
+	private static final float JUMP_SPEED = Main.DEBUG ? 100 : 450;
+	private static final float DOUBLE_JUMP_SPEED = Main.DEBUG ? 100 : 345;
 	private static final float AIR_RESISTANCE = Main.DEBUG ? 0.5f : -0.3f;
 	private static final int DEFAULT_WIDTH = 30;
 	private static final int DEFAULT_HEIGHT = 60;

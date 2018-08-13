@@ -30,9 +30,10 @@ public final class GameScreen implements Screen, InputProcessor {
 	
 	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
 	private Texture background_texture;
+	
+	private static final String RES_ARROW_TEXTURE = "graphics/arrow.png";
+	private Texture arrowTexture;
 
-	
-	
 	
 	private BitmapFont font;
 	private BitmapFont littleFont;
@@ -72,7 +73,7 @@ public final class GameScreen implements Screen, InputProcessor {
 		littleFont = game.assetmanager.easyget(game.RES_LITTLE_FONT_NAME, BitmapFont.class);
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
-		
+		arrowTexture = game.assetmanager.get(RES_ARROW_TEXTURE);
 		
 		
 		setUpTutorialMonitors();
@@ -113,7 +114,7 @@ public final class GameScreen implements Screen, InputProcessor {
 					+ "32,0:6";
 			startposfactorx = 2f;
 			startposfactory = 8f;
-			maxspace = 2;
+			maxspace = 5;
 			doublejumpallowed = true;
 			goalx = 31;
 			goaly = 0;
@@ -214,7 +215,7 @@ public final class GameScreen implements Screen, InputProcessor {
 		tutorialMonitors = new InfoMonitor[4];
 		
 		tutorialMonitors[0] = new InfoMonitor(game.SCREEN_WIDTH/6, game.SCREEN_HEIGHT/3, width, height, "Use\nA and D\nto move\nLEFT and RIGHT!", game);
-		tutorialMonitors[1] = new InfoMonitor(game.SCREEN_WIDTH/4, game.SCREEN_HEIGHT/3, width, height, "Use\nSPACE\nto\nJUMP!", game);
+		tutorialMonitors[1] = new InfoMonitor(game.SCREEN_WIDTH/4, game.SCREEN_HEIGHT/3, width, height, "Use SPACE\nto JUMP!\nDoublejumps are possible!", game);
 		tutorialMonitors[2] = new InfoMonitor(game.SCREEN_WIDTH/2, game.SCREEN_HEIGHT/4*3 - 10, width, height, "Don't jump too often!\nDon't run out of\nSPACE", game);
 		tutorialMonitors[3] = new InfoMonitor(game.SCREEN_WIDTH/3*2, game.SCREEN_HEIGHT/3, width, height, "Fit between\nALT and ALT_GR\nto finish the level!", game);
 	}
@@ -272,6 +273,8 @@ public final class GameScreen implements Screen, InputProcessor {
 					currentMonitor = 2;
 					if(player.getPosition().x > 750) {
 						currentMonitor = 3;
+					}else {
+						game.spritebatch.draw(arrowTexture, game.SCREEN_WIDTH/4*3 + 32, game.SCREEN_HEIGHT/10*8 + 32);
 					}
 				}
 			}
@@ -307,6 +310,7 @@ public final class GameScreen implements Screen, InputProcessor {
 
 	public static void prefetch(AssetManager m) {
 		Player.prefetch(m);
+		m.load(RES_ARROW_TEXTURE, Texture.class);
 	}
 
 	@Override

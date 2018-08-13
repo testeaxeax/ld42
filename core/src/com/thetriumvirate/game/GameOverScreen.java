@@ -27,6 +27,8 @@ public class GameOverScreen  implements Screen, InputProcessor{
 	private static final String TITLE_BACKGROUND_TEXTURE = "graphics/well_done_title.png";
 	private Texture title_background_texture;
 	
+	
+	
 	private static final String RES_GAMEOVER_SOUND = "audio/gameOver.wav";
 	private Sound gameOverSound;
 	
@@ -79,6 +81,8 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		title_background_texture = game.assetmanager.get(TITLE_BACKGROUND_TEXTURE, Texture.class);
 		gameOverSound = game.assetmanager.get(RES_GAMEOVER_SOUND);
 		keySound = game.assetmanager.get(RES_KEY_SOUND);
+		
+		
 		
 		deathMessageText = deathMessage;
 		
@@ -185,6 +189,7 @@ public class GameOverScreen  implements Screen, InputProcessor{
 
 	public static void prefetch(AssetManager m) {
 		m.load(RES_GAMEOVER_SOUND, Sound.class);
+		
 	}
 	
 	@Override

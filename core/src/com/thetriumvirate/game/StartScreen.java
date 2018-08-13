@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -46,6 +47,10 @@ public final class StartScreen implements Screen, InputProcessor {
 	
 	private static final String RES_KEY_SOUND = "audio/keyboard_pressing_onekey.wav";
 	private Sound keySound;
+	
+	private static final String RES_BACKGROUND_MUSIC = "audio/background_music.mp3";
+	private Music backgroundMusic;
+	
 	
 	public StartScreen(final Main game) {
 		this.game = game;
@@ -111,6 +116,7 @@ public final class StartScreen implements Screen, InputProcessor {
 		//typeAdvice = new InfoMonitor(50, CAM_HEIGHT/2 - 75, 250, 150, "Type \n P-L-A-Y \n to start the game!", this.game);
 		
 		keySound = game.assetmanager.get(RES_KEY_SOUND);
+		backgroundMusic = game.assetmanager.get(RES_BACKGROUND_MUSIC);
 		
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -129,6 +135,8 @@ public final class StartScreen implements Screen, InputProcessor {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
+		backgroundMusic.setLooping(true);
+		backgroundMusic.play();
 	}
 
 	@Override
@@ -157,6 +165,7 @@ public final class StartScreen implements Screen, InputProcessor {
 
 	public static void prefetch(AssetManager m) {
 		m.load(BACKGROUND_TEXTURE, Texture.class);
+		m.load(RES_BACKGROUND_MUSIC, Music.class);
 	}
 	
 	@Override

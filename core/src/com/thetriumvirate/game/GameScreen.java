@@ -105,11 +105,11 @@ public final class GameScreen implements Screen, InputProcessor {
 		int goalx = -1, goaly = -1;
 		
 		// Border left, bottom and right outside
-		final String border = "0:32,0;0,0:25;32,0:24;0:32,25;";
+		final String border = "0:8,0;0,0:25;32,0:24;0:32,25;";
 		
 		switch(level) {
 		// START LEVEL CONFIG
-		case 1:
+		case 0:
 			gridconfig = "0:32,0;"
 					+ "0,0:25;"
 					+ "0:32,24;"
@@ -146,7 +146,7 @@ public final class GameScreen implements Screen, InputProcessor {
 			goaly = 15;
       showTutorial = false;
       break;
-    case 3:
+    case 1:
 			// mittel - schwer
 			gridconfig = border 
 						+ "31,0:20;"

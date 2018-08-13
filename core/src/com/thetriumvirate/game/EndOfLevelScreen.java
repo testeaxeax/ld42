@@ -56,8 +56,9 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	private Sound fanfareSound;
 	
 	private int completedLevel;
+	private int lastLevel;
 	
-	public EndOfLevelScreen(Main game, int remaining_space, int level) {
+	public EndOfLevelScreen(Main game, int remaining_space, int level, int lastlevel) {
 		this.game = game;
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, CAM_WIDTH, CAM_HEIGHT);
@@ -86,6 +87,7 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		stageCompleteText = "Level " + level + " complete";
 		
 		completedLevel = level;
+		this.lastLevel = lastlevel;
 		
 		initContent();
 	}
@@ -131,17 +133,20 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 			w.setX(wpx);
 			wpx += w.getWidth() + stageCompleteBtns[0].getButtons().get(0).getWidth()/2;
 		}
-		
-		nextLevelBtn = new WordButton(game.SCREEN_WIDTH/4*3, game.SCREEN_HEIGHT/4, WordButton.NORMAL_SPACING, new WordButtonListener() {
+		if(completedLevel != lastLevel) {
+			nextLevelBtn = new WordButton(game.SCREEN_WIDTH/4*3, game.SCREEN_HEIGHT/4, WordButton.NORMAL_SPACING, new WordButtonListener() {
 			
 			@Override
-			public void onFinish(WordButton btn) {
+				public void onFinish(WordButton btn) {
 				game.screenmanager.set(new GameScreen(game, completedLevel+1), true);
-			}
-		}, "Next", true);
-		addWord(nextLevelBtn);
+				}
+			}, "Next", true);
+			addWord(nextLevelBtn);
+		}else {
+			nextLevelBtn = null;
+		}
 		
-		menuBtn = new WordButton(game.SCREEN_WIDTH/4, game.SCREEN_HEIGHT/4,
+		menuBtn = new WordButton(game.SCREEN_WIDTH/((completedLevel == lastLevel) ? 2 : 4), game.SCREEN_HEIGHT/4,
 					  WordButton.NORMAL_SPACING, new WordButtonListener() {
 			
 			@Override
@@ -198,7 +203,9 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		
 		game.spritebatch.end();
 		
-		nextLevelBtn.update();
+		if(nextLevelBtn != null) {
+			nextLevelBtn.update();
+		}
 		menuBtn.update();
 	}
 

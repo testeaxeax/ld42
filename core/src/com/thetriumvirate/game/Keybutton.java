@@ -72,7 +72,7 @@ public class Keybutton {
 		layout = new GlyphLayout(font, this.key);
 		font.setColor(0.0f, 0.0f, 0.0f, 1.0f);
 		font.draw(game.spritebatch, layout, this.x + this.width / 2 - layout.width / 2,
-				this.y + this.height / 2 + layout.height / 2);
+				this.y + this.height / 2 + layout.height / 2 - (this.state ? 2 : 0));
 	}
 
 	public static void load(Main game) {

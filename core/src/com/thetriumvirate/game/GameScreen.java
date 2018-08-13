@@ -219,7 +219,7 @@ public final class GameScreen implements Screen, InputProcessor {
 							Keyblock.getEdgeLength(), Keyblock.getEdgeLength());
 					GlyphLayout gl = blocks[i][j].getLayout();
 					littleFont.draw(game.spritebatch, gl, blocks[i][j].getPosX() + Keyblock.getEdgeLength()/5,
-							blocks[i][j].getPosY() + Keyblock.getEdgeLength() - Keyblock.getEdgeLength()/5);
+							blocks[i][j].getPosY() + Keyblock.getEdgeLength() - Keyblock.getEdgeLength()/5 - (blocks[i][j].isPressed() ? blocks[i][j].getLayout().height/5 : 0));
 				}
 			}
 		}

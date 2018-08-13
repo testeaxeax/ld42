@@ -28,6 +28,18 @@ public class Keyblock {
 		letter = String.valueOf(ascii.charAt(gs.getGame().RAND.nextInt(ascii.length())));
 		layout = new GlyphLayout(font, letter);
 	}
+	
+	public Keyblock(int arrayPosX, int arrayPosY, int edgeLength, BitmapFont font, SplashScreen ss) {
+		this.edgeLength = edgeLength;
+		this.posX = arrayPosX * edgeLength;
+		this.posY = arrayPosY * edgeLength;
+		
+		
+		
+		//gen random char
+		letter = String.valueOf(ascii.charAt(ss.getGame().RAND.nextInt(ascii.length())));
+		layout = new GlyphLayout(font, letter);
+	}
 
 	public Keyblock(int arrayPosX, int arrayPosY, int edgeLength, String letter,BitmapFont font, GameScreen gs) {
 		this.edgeLength = edgeLength;

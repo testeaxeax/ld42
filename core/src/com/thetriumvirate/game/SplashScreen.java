@@ -3,6 +3,7 @@ package com.thetriumvirate.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -17,11 +18,14 @@ public final class SplashScreen implements Screen {
 	
 	// Resource paths
 	private static final String RES_SPLASH = "graphics/splash.jpg";
+	private static final String TEX_PATH_UP = "graphics/keyblock.png";
+	private Texture background_blockTexture;
 
 	private Main game;
 	private OrthographicCamera cam;
-	private Texture t;
 	private BitmapFont font;
+	private BitmapFont littleFont;
+	
 	// Used to center the text
 	private GlyphLayout layout;
 	private long showtime;
@@ -31,6 +35,11 @@ public final class SplashScreen implements Screen {
 	private long lastAnimTime, curAnimTime;
 	private	boolean animDone;
 	private static int ANIM_STEP_DURATION = 300;
+	
+	private int screenBlockWidth = 32, screenBlockHeight = 25;
+	private Keyblock[][] backgroundBlocks;
+	private Pixmap backgroundShadePixmap;
+	private Texture backgroundShadeTexture;
 
 	public SplashScreen(Main game) {
 		this.game = game;
@@ -44,7 +53,9 @@ public final class SplashScreen implements Screen {
 		game.loadGlobalResources();
 		// Getting all resources required for SplashScreen
 		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
-		t = game.assetmanager.easyget(RES_SPLASH, Texture.class);
+		littleFont = game.assetmanager.easyget(game.RES_LITTLE_FONT_NAME, BitmapFont.class);
+		
+		initBackground();
 		
 		loading = new WordButton(CAM_WIDTH / 2, CAM_HEIGHT / 2, 0, new WordButton.WordButtonListener() {
 			@Override
@@ -53,7 +64,26 @@ public final class SplashScreen implements Screen {
 		}, "loading...", true);
 		
 		Keybutton.load(game);
+		background_blockTexture = game.assetmanager.easyget(TEX_PATH_UP, Texture.class);
 	}
+	
+	private void initBackground() {
+		backgroundBlocks = new Keyblock[screenBlockWidth][];
+		for(int i = 0; i < backgroundBlocks.length; i++) {
+			backgroundBlocks[i] = new Keyblock[screenBlockHeight];
+			for(int j = 0; j < backgroundBlocks[i].length; j++) {
+				backgroundBlocks[i][j] = new Keyblock(i, j, 32, littleFont, this);
+				
+			}
+		}
+		
+		backgroundShadePixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+		backgroundShadePixmap.setColor(0f, 0f, 0f, 0.5f);
+		backgroundShadePixmap.fill();
+		backgroundShadeTexture = new Texture(backgroundShadePixmap);
+		backgroundShadePixmap.dispose();
+	}
+	
 
 	@Override
 	public void show() {
@@ -62,6 +92,7 @@ public final class SplashScreen implements Screen {
 		StartScreen.prefetch(game.assetmanager);
 		GameScreen.prefetch(game.assetmanager);
 		CreditsScreen.prefetch(game.assetmanager);
+		EndOfLevelScreen.prefetch(game.assetmanager);
 		
 		showtime = TimeUtils.millis();
 		lastAnimTime = showtime;
@@ -96,7 +127,16 @@ public final class SplashScreen implements Screen {
 		//final Vector2 pos = new Vector2((CAM_WIDTH / 2) - (layout.width / 2), (CAM_HEIGHT / 4) - (layout.height / 2));
 		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		game.spritebatch.begin();
-		//game.spritebatch.draw(t, 0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+		
+		for(int i = 0; i < backgroundBlocks.length; i++) {
+			for(int j = 0; j < backgroundBlocks[i].length; j++) {
+				game.spritebatch.draw(background_blockTexture, backgroundBlocks[i][j].getPosX(), backgroundBlocks[i][j].getPosY(), Keyblock.getEdgeLength(), Keyblock.getEdgeLength());
+				littleFont.draw(game.spritebatch, backgroundBlocks[i][j].getLayout(), backgroundBlocks[i][j].getPosX() + Keyblock.getEdgeLength()/5,
+						backgroundBlocks[i][j].getPosY() + Keyblock.getEdgeLength() - Keyblock.getEdgeLength()/5 - 
+						(backgroundBlocks[i][j].isPressed() ? backgroundBlocks[i][j].getLayout().height/5 : 0));
+			}
+		}
+		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
 		if(animDone) {
 			for(Keybutton k : loading.getButtons())
@@ -118,6 +158,10 @@ public final class SplashScreen implements Screen {
 			// TODO Replace ScreenTemplate with actual game/menu screen
 			game.screenmanager.set(game.getMainMenu(), false);
 		}
+	}
+	
+	public Main getGame() {
+		return this.game;
 	}
 
 	@Override
@@ -143,6 +187,5 @@ public final class SplashScreen implements Screen {
 	// TODO Unload all non-global resources
 	@Override
 	public void dispose() {
-		game.assetmanager.unload(RES_SPLASH);
 	}
 }

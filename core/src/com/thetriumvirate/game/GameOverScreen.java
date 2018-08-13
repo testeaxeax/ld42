@@ -23,6 +23,9 @@ public class GameOverScreen  implements Screen, InputProcessor{
 	// private static final String RES_SOMETHING = "somewhere/something";
 	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
 	
+	private static final String TITLE_BACKGROUND_TEXTURE = "graphics/well_done_title.png";
+	private Texture title_background_texture;
+	
 	private Main game;
 	private OrthographicCamera cam;
 	
@@ -67,6 +70,8 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		backgroundShadePixmap.fill();
 		backgroundShadeTexture = new Texture(backgroundShadePixmap);
 		backgroundShadePixmap.dispose();
+		
+		title_background_texture = game.assetmanager.get(TITLE_BACKGROUND_TEXTURE, Texture.class);
 		
 		deathMessageText = deathMessage;
 		
@@ -150,11 +155,15 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		game.spritebatch.begin();
 		
 		game.spritebatch.draw(background_texture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
-		
 		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
+		game.spritebatch.draw(title_background_texture, (game.SCREEN_WIDTH - title_background_texture.getWidth())/2, 
+				  game.SCREEN_HEIGHT/4*3);
 		
-		titleFont.draw(game.spritebatch, titleLayout, game.SCREEN_WIDTH/2 - titleLayout.width/2, game.SCREEN_HEIGHT/4*3);
+		
+		
+		titleFont.draw(game.spritebatch, titleLayout, game.SCREEN_WIDTH/2 - titleLayout.width/2, game.SCREEN_HEIGHT/4*3 
+				+ titleLayout.height + (title_background_texture.getHeight() - titleLayout.height)/2);
 		//defaultFont.draw(game.spritebatch, deathMessageLayout, game.SCREEN_WIDTH/2 - deathMessageLayout.width/2, game.SCREEN_HEIGHT/4*3 - 1.4f*titleLayout.height);
 		
 		for(Keybutton b : buttons)

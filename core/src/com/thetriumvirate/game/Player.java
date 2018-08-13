@@ -53,6 +53,7 @@ public class Player {
 	}
 	
 	public void update(float delta) {
+		System.out.println("render");
 		if(freeze) {
 			return;
 		}
@@ -64,10 +65,10 @@ public class Player {
 		}else if(movingleft) {
 			speed.x -= MOVEMENT_ACCELERATION * delta;
 		}
-		speed.x *= 1 - ((1 - AIR_RESISTANCE) * delta);
+		speed.x = speed.x * (1f - ((1f - AIR_RESISTANCE) * delta));
 		// Gravity
 		speed.y += GRAVITATIONAL_ACCELERATION * delta;
-		speed.y *= 1 - ((1 - AIR_RESISTANCE) * delta);
+		speed.y = speed.y * (1f - ((1f - AIR_RESISTANCE) * delta));
 		
 		// Updating x-coordinate
 		Vector2 previousposition = new Vector2(position);
@@ -104,10 +105,10 @@ public class Player {
 						int upperyboundary = loweryboundary + blockedgelength;
 					
 						// Checking in x-direction
-						if(playerrightxboundary <= leftxboundary) {
+						if(playerrightxboundary < leftxboundary) {
 							xcollision = false;
 						}
-						else if(playerleftxboundary >= rightxboundary) {
+						else if(playerleftxboundary > rightxboundary) {
 							xcollision = false;
 						}else {
 							xcollision = true;

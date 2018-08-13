@@ -10,6 +10,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -35,6 +36,11 @@ public final class GameScreen implements Screen, InputProcessor {
 	
 	private BitmapFont font;
 	private BitmapFont littleFont;
+	
+	private static final float SHADE_TARGET = 0.5f;
+	private static final float SHADE_STEP = 0.1f;
+	private boolean fadeout;
+	private float shadefactor;
 
 	private Main game;
 	private OrthographicCamera cam;
@@ -71,6 +77,8 @@ public final class GameScreen implements Screen, InputProcessor {
 		
 		this.currentLevel = lvl;
 		loadLevel(currentLevel);
+		fadeout = false;
+		shadefactor = 0f;
 	}
 	
 	public Keyblock[][] getKeyblocks(){
@@ -275,6 +283,23 @@ public final class GameScreen implements Screen, InputProcessor {
 		player.update(delta);
 		game.spritebatch.draw(player.getTexture(), player.getPosition().x, player.getPosition().y, player.getWidth(), player.getHeight());
 		
+		if(fadeout) {
+			if(shadefactor < SHADE_TARGET) {
+				shadefactor += SHADE_STEP * delta;
+				if(shadefactor > SHADE_TARGET) {
+					shadefactor = SHADE_TARGET;
+				}
+			}
+			Pixmap shadepixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+			shadepixmap.setColor(0f, 0f, 0f, shadefactor);
+			shadepixmap.fill();
+			game.spritebatch.draw(new Texture(shadepixmap), 0, 0, Main.SCREEN_WIDTH, Main.SCREEN_HEIGHT);
+			shadepixmap.dispose();
+			if(shadefactor == SHADE_TARGET) {
+				game.screenmanager.set(new EndOfLevelScreen(game, player.getSpaceRemaining(), currentLevel), true);
+			}
+		}
+		
 		game.spritebatch.end();
 	}
 
@@ -318,6 +343,12 @@ public final class GameScreen implements Screen, InputProcessor {
 			case(0):game.screenmanager.set(new GameOverScreen(game, "You ran out of space", currentLevel), true); break;
 			case(1):game.screenmanager.set(new GameOverScreen(game, "You fell out of the world", currentLevel), true); break;
 		}
+	}
+	
+	public void endOfLevel() {
+		player.setFreeze(true);
+		System.out.println("EOL");
+		fadeout = true;
 	}
 
 	@Override

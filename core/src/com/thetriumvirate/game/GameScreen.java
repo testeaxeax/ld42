@@ -85,9 +85,10 @@ public final class GameScreen implements Screen, InputProcessor {
 		switch(level) {
 		// START LEVEL CONFIG
 		case 1:
-			gridconfig = "0:32,0;0,1:25;31,1:25";
-			startposfactorx = 5f;
-			startposfactory = 15f;
+			//gridconfig = "0:32,0;0,1:25;31,1:25;4:8,4:12";
+			gridconfig = "0:32,0;3:12,5;0,0:20;1,3";
+			startposfactorx = 8f;
+			startposfactory = 8f;
 			maxspace = 20;
 			doublejumpallowed = true;
 			break;

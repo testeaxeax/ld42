@@ -13,7 +13,7 @@ public final class SplashScreen implements Screen {
 	private static final int CAM_WIDTH = Main.SCREEN_WIDTH;
 	private static final int CAM_HEIGHT = Main.SCREEN_HEIGHT;
 	// SplashScreen will be displayed for at least 5 seconds
-	private static final int MIN_SHOWTIME = 10500;
+	private static final int MIN_SHOWTIME = 1;
 	
 	// Resource paths
 	private static final String RES_SPLASH = "graphics/splash.jpg";

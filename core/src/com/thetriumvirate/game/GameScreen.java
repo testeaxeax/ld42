@@ -45,7 +45,7 @@ public final class GameScreen implements Screen, InputProcessor {
 	private Main game;
 	private OrthographicCamera cam;
 
-	public int pixelGridWidth = 32, pixelGridHeight = 25;
+	public int pixelGridWidth = 33, pixelGridHeight = 25;
 	private Keyblock[][] blocks = new Keyblock[pixelGridWidth][];
 	
 	private Goal goal;
@@ -56,6 +56,9 @@ public final class GameScreen implements Screen, InputProcessor {
 	
 	private int currentLevel;
 	
+	private boolean showTutorial = false;
+	private InfoMonitor[] tutorialMonitors;
+	private int currentMonitor = 0;
 	
 	public GameScreen(Main game, int lvl) {
 		this.game = game;
@@ -69,6 +72,8 @@ public final class GameScreen implements Screen, InputProcessor {
 		littleFont = game.assetmanager.easyget(game.RES_LITTLE_FONT_NAME, BitmapFont.class);
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
+		
+		setUpTutorialMonitors();
 		
 		this.currentLevel = lvl;
 		loadLevel(currentLevel);
@@ -85,7 +90,7 @@ public final class GameScreen implements Screen, InputProcessor {
 		jumpCount = new Keybutton[2];
 		int spacing = 3;
 		for(int i = 0; i < jumpCount.length; i++) {
-			jumpCount[i] = new Keybutton(CAM_WIDTH - 30 - jumpCount.length * (spacing + Keybutton.NORMAL_WIDTH) + i * (spacing + Keybutton.NORMAL_WIDTH) , CAM_HEIGHT - 30 - Keybutton.NORMAL_HEIGHT, Input.Keys.NUM_0, false);
+			jumpCount[i] = new Keybutton(CAM_WIDTH - Keyblock.getEdgeLength() - jumpCount.length * (spacing + Keybutton.NORMAL_WIDTH) + i * (spacing + Keybutton.NORMAL_WIDTH) , CAM_HEIGHT - Keyblock.getEdgeLength() - Keybutton.NORMAL_HEIGHT - 2, Input.Keys.NUM_0, false);
 		}
 		
 		String gridconfig = null;
@@ -98,14 +103,19 @@ public final class GameScreen implements Screen, InputProcessor {
 		switch(level) {
 		// START LEVEL CONFIG
 		case 1:
-			//gridconfig = "0:32,0;0,1:25;31,1:25;4:8,4:12";
-			gridconfig = "0:32,0;3:12,5;0,0:20;1,3";
-			startposfactorx = 8f;
+			gridconfig = "0:32,0;"
+					+ "0,0:25;"
+					+ "0:32,24;"
+					+ "31,5:25;"
+					+ "15:31,1;"
+					+ "32,0:6";
+			startposfactorx = 2f;
 			startposfactory = 8f;
-			maxspace = 20;
+			maxspace = 2;
 			doublejumpallowed = true;
-			goalx = 25;
+			goalx = 31;
 			goaly = 0;
+			showTutorial = true;
 			break;
 		// END LEVEL CONFIG
 		default:
@@ -197,6 +207,17 @@ public final class GameScreen implements Screen, InputProcessor {
 	}
 	
 	
+	private void setUpTutorialMonitors() {
+		int width = 250, height = 150;
+		tutorialMonitors = new InfoMonitor[4];
+		
+		tutorialMonitors[0] = new InfoMonitor(game.SCREEN_WIDTH/6, game.SCREEN_HEIGHT/3, width, height, "Use\nA and D\nto move\nLEFT and RIGHT!", game);
+		tutorialMonitors[1] = new InfoMonitor(game.SCREEN_WIDTH/4, game.SCREEN_HEIGHT/3, width, height, "Use\nSPACE\nto\nJUMP!", game);
+		tutorialMonitors[2] = new InfoMonitor(game.SCREEN_WIDTH/2, game.SCREEN_HEIGHT/4*3 - 10, width, height, "Don't jump too often!\nDon't run out of\nSPACE", game);
+		tutorialMonitors[3] = new InfoMonitor(game.SCREEN_WIDTH/3*2, game.SCREEN_HEIGHT/3, width, height, "Fit between\nALT and ALT_GR\nto finish the level!", game);
+	}
+	
+	
 	private void toggleKeys(String s, boolean press) {
 		for(int i = 0; i < blocks.length; i++) {
 			for(int j = 0; j < blocks[i].length; j++) {
@@ -239,6 +260,24 @@ public final class GameScreen implements Screen, InputProcessor {
 
 		for(Keybutton b : jumpCount)
 			b.render(game);
+		
+		if(showTutorial) {
+			//calc which monitor should be shown
+			currentMonitor = 0;
+			if(player.getPosition().x > 250) {
+				currentMonitor = 1;
+				if(player.getPosition().x > 400) {
+					currentMonitor = 2;
+					if(player.getPosition().x > 750) {
+						currentMonitor = 3;
+					}
+				}
+			}
+			tutorialMonitors[currentMonitor].render(game);
+		}
+		
+		
+		
 		
 		// Render player
 		player.update(delta);

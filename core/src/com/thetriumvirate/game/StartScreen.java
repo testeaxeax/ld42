@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 public final class StartScreen implements Screen, InputProcessor {
 	
@@ -20,6 +21,7 @@ public final class StartScreen implements Screen, InputProcessor {
 	// private static final String RES_SOMETHING = "somewhere/something";
 	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
 	private Texture background_texture;
+	
 	
 	private ArrayList<Keybutton> buttons;
 	private WordButton wordPlay;
@@ -118,6 +120,7 @@ public final class StartScreen implements Screen, InputProcessor {
 		game.spritebatch.draw(background_texture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
 		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
+		
 		
 		for(Keybutton b : buttons)
 			b.render(game);

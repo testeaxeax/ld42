@@ -55,7 +55,7 @@ public final class GameScreen implements Screen, InputProcessor {
 	private Keybutton[] jumpCount;
 	
 	private int currentLevel;
-	private static final int LAST_LEVEL = 2;
+	private static final int LAST_LEVEL = 3;
 	
 	private boolean showTutorial = false;
 	private InfoMonitor[] tutorialMonitors;
@@ -124,6 +124,28 @@ public final class GameScreen implements Screen, InputProcessor {
 			showTutorial = true;
 			break;
 		case 2:
+			gridconfig = "1:3,2;"
+					+ "0,0:25;"
+					+ "31,0:15;"
+					+ "31,20:25;"
+					+ "7:15,0;"
+					+ "7:15,7;"
+					+ "1:8,12;"
+					+ "1:7,15;"
+					+ "12,17;"
+					+ "22,14;"
+					+ "28:30,14;"
+					+ "15,20;"
+					+ "6,22;";
+			startposfactorx = 1.5f;
+			startposfactory = 3f;
+			maxspace = 10;
+			doublejumpallowed = true;
+			goalx = 31;
+			goaly = 15;
+      showTutorial = false;
+      break;
+    case 3:
 			// mittel - schwer
 			gridconfig = border 
 						+ "31,0:20;"
@@ -146,6 +168,7 @@ public final class GameScreen implements Screen, InputProcessor {
 			showTutorial = false;
 			break;
 		// END LEVEL CONFIG
+			
 		default:
 			System.out.print("Error: No such level");
 			Gdx.app.exit();

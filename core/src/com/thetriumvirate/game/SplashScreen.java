@@ -2,6 +2,7 @@ package com.thetriumvirate.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,7 +20,9 @@ public final class SplashScreen implements Screen {
 	// Resource paths
 	private static final String RES_SPLASH = "graphics/splash.jpg";
 	private static final String TEX_PATH_UP = "graphics/keyblock.png";
+	private static final String RES_KEY_SOUND = "audio/keyboard_pressing_onekey.wav";
 	private Texture background_blockTexture;
+	private Sound keySound;
 
 	private Main game;
 	private OrthographicCamera cam;
@@ -65,6 +68,7 @@ public final class SplashScreen implements Screen {
 		
 		Keybutton.load(game);
 		background_blockTexture = game.assetmanager.easyget(TEX_PATH_UP, Texture.class);
+		keySound = game.assetmanager.easyget(RES_KEY_SOUND, Sound.class);
 	}
 	
 	private void initBackground() {
@@ -118,6 +122,7 @@ public final class SplashScreen implements Screen {
 		if(curAnimTime - lastAnimTime > ANIM_STEP_DURATION) {
 			if(status < loading.getButtons().size() && animDone)
 				loading.getButtons().get(status).setPressed(!loading.getButtons().get(status).isPressed());
+			else keySound.play(1f);
 			
 			status++;
 			lastAnimTime = curAnimTime;

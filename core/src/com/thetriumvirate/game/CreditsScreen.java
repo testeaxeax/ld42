@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,6 +23,9 @@ public final class CreditsScreen implements Screen, InputProcessor {
 	
 	private static final String RES_MONITOR_TEXTURE = "graphics/monitor.png";
 	private Texture monitor_texture;
+	
+	private static final String RES_KEY_SOUND = "audio/keyboard_pressing_onekey.wav";
+	private Sound keySound;
 	
 	// Resource paths
 	// private static final String RES_SOMETHING = "somewhere/something";
@@ -72,6 +76,7 @@ public final class CreditsScreen implements Screen, InputProcessor {
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		monitor_texture = game.assetmanager.easyget(RES_MONITOR_TEXTURE, Texture.class);
+		keySound = game.assetmanager.get(RES_KEY_SOUND);
 		
 		backgroundShadePixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 		backgroundShadePixmap.setColor(0f, 0f, 0f, 0.5f);
@@ -161,6 +166,7 @@ public final class CreditsScreen implements Screen, InputProcessor {
 			if(b.updateState(keycode, true))
 				ret = true;
 		}
+		if(ret)keySound.play();
 		return ret;
 	}
 

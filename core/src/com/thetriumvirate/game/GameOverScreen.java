@@ -30,6 +30,9 @@ public class GameOverScreen  implements Screen, InputProcessor{
 	private static final String RES_GAMEOVER_SOUND = "audio/gameOver.wav";
 	private Sound gameOverSound;
 	
+	private static final String RES_KEY_SOUND = "audio/keyboard_pressing_onekey.wav";
+	private Sound keySound;
+	
 	private Main game;
 	private OrthographicCamera cam;
 	
@@ -75,6 +78,7 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		
 		title_background_texture = game.assetmanager.get(TITLE_BACKGROUND_TEXTURE, Texture.class);
 		gameOverSound = game.assetmanager.get(RES_GAMEOVER_SOUND);
+		keySound = game.assetmanager.get(RES_KEY_SOUND);
 		
 		deathMessageText = deathMessage;
 		
@@ -216,6 +220,7 @@ public class GameOverScreen  implements Screen, InputProcessor{
 			if(b.updateState(keycode, true))
 				ret = true;
 		}
+		if(ret)keySound.play();
 		return ret;
 	}
 

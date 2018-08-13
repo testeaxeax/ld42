@@ -30,6 +30,9 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	private Main game;
 	private OrthographicCamera cam;
 	
+	private static final String RES_KEY_SOUND = "audio/keyboard_pressing_onekey.wav";
+	private Sound keySound;
+	
 	
 	private BitmapFont titleFont;
 	
@@ -71,6 +74,7 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		title_background_texture = game.assetmanager.easyget(TITLE_BACKGROUND_TEXTURE, Texture.class);
 		
 		fanfareSound = game.assetmanager.get(RES_FANFARE_SOUND);
+		keySound = game.assetmanager.get(RES_KEY_SOUND);
 		
 		backgroundShadePixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 		backgroundShadePixmap.setColor(0f, 0f, 0f, 0.5f);
@@ -236,6 +240,7 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 			if(b.updateState(keycode, true))
 				ret = true;
 		}
+		if(ret)keySound.play();
 		return ret;
 	}
 

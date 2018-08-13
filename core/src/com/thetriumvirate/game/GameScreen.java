@@ -38,7 +38,7 @@ public final class GameScreen implements Screen, InputProcessor {
 	private BitmapFont littleFont;
 	
 	private static final float SHADE_TARGET = 0.5f;
-	private static final float SHADE_STEP = 0.1f;
+	private static final float SHADE_STEP = Main.DEBUG ? 0.1f : 0.5f;
 	private boolean fadeout;
 	private float shadefactor;
 

@@ -5,15 +5,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class Player {
+	
 
 	private static final String RES_PLAYER_TEXTURE = "graphics/player_texture.png";
 	private static final String RES_PLAYER_TEXTURE_DOWN = "graphics/player_texture_down.png";
 	// TODO Fix values
-	private static final float GRAVITATIONAL_ACCELERATION = -50;
-	private static final float MOVEMENTE_ACCELERATION = 50;
-	private static final float JUMP_SPEED = 100;
-	private static final float DOUBLE_JUMP_SPEED = 100;
-	private static final float AIR_RESISTANCE = 0.5f;
+	private static final float GRAVITATIONAL_ACCELERATION = Main.DEBUG ? -50 : -800;
+	private static final float MOVEMENT_ACCELERATION = Main.DEBUG ? 50 : 200;
+	private static final float JUMP_SPEED = Main.DEBUG ? 100 : 300;
+	private static final float DOUBLE_JUMP_SPEED = Main.DEBUG ? 100 : 230;
+	private static final float AIR_RESISTANCE = Main.DEBUG ? 0.5f : 0.6f;
 	private static final int DEFAULT_WIDTH = 30;
 	private static final int DEFAULT_HEIGHT = 60;
 	
@@ -59,9 +60,9 @@ public class Player {
 		Keyblock[][] blocks = gamescreen.getKeyblocks();
 		
 		if(movingright) {
-			speed.x += MOVEMENTE_ACCELERATION * delta;
+			speed.x += MOVEMENT_ACCELERATION * delta;
 		}else if(movingleft) {
-			speed.x -= MOVEMENTE_ACCELERATION * delta;
+			speed.x -= MOVEMENT_ACCELERATION * delta;
 		}
 		speed.x *= 1 - ((1 - AIR_RESISTANCE) * delta);
 		// Gravity

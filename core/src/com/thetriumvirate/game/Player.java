@@ -13,7 +13,7 @@ public class Player {
 	private static final float MOVEMENTE_ACCELERATION = 50;
 	private static final float JUMP_SPEED = 100;
 	private static final float DOUBLE_JUMP_SPEED = 100;
-	private static final float AIR_RESISTANCE = 0.5f;
+	private static final float AIR_RESISTANCE = 0.9f;
 	private static final int DEFAULT_WIDTH = 30;
 	private static final int DEFAULT_HEIGHT = 60;
 	
@@ -63,10 +63,10 @@ public class Player {
 		}else if(movingleft) {
 			speed.x -= MOVEMENTE_ACCELERATION * delta;
 		}
-		speed.x *= 1 - ((1 - AIR_RESISTANCE) * delta);
+		speed.x = speed.x * (1f - ((1f - AIR_RESISTANCE) * delta));
 		// Gravity
 		speed.y += GRAVITATIONAL_ACCELERATION * delta;
-		speed.y *= 1 - ((1 - AIR_RESISTANCE) * delta);
+		speed.y = speed.y * (1f - ((1f - AIR_RESISTANCE) * delta));
 		
 		// Updating x-coordinate
 		Vector2 previousposition = new Vector2(position);

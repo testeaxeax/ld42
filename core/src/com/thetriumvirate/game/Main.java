@@ -19,8 +19,8 @@ public class Main extends Game {
 	
 	public final String RES_FONT;
 	public final String RES_LITTLE_FONT_NAME;
-	
 	public final String RES_TITLE_FONT_NAME;
+	public final String RES_INFO_FONT_NAME;
 	
 	// Globally used variables
 	public static int SCREEN_HEIGHT = 800;
@@ -53,6 +53,7 @@ public class Main extends Game {
 		RES_FONT = "fonts/OpenSans-SemiBold";
 		RES_LITTLE_FONT_NAME = "littleFont.ttf";
 		RES_TITLE_FONT_NAME = "titleFont.ttf";
+		RES_INFO_FONT_NAME = "infoFont.ttf";
 		
 	}
 	
@@ -86,6 +87,7 @@ public class Main extends Game {
 		fontloader.load(RES_DEFAULT_FONT);
 		fontloader.load(RES_FONT, Keyblock.getEdgeLength()/4, RES_LITTLE_FONT_NAME);
 		fontloader.load(RES_FONT, (int) (Keyblock.getEdgeLength()*2.5f), RES_TITLE_FONT_NAME);
+		fontloader.load(RES_FONT, 20, RES_INFO_FONT_NAME);
 	}
 	
 	@Override

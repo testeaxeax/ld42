@@ -13,7 +13,7 @@ public class Player {
 	private static final float MOVEMENTE_ACCELERATION = 50;
 	private static final float JUMP_SPEED = 100;
 	private static final float DOUBLE_JUMP_SPEED = 100;
-	private static final float AIR_RESISTANCE = 0.9f;
+	private static final float AIR_RESISTANCE = 1f;
 	private static final int DEFAULT_WIDTH = 30;
 	private static final int DEFAULT_HEIGHT = 60;
 	
@@ -52,6 +52,7 @@ public class Player {
 	}
 	
 	public void update(float delta) {
+		System.out.println("render");
 		if(freeze) {
 			return;
 		}
@@ -103,10 +104,10 @@ public class Player {
 						int upperyboundary = loweryboundary + blockedgelength;
 					
 						// Checking in x-direction
-						if(playerrightxboundary <= leftxboundary) {
+						if(playerrightxboundary < leftxboundary) {
 							xcollision = false;
 						}
-						else if(playerleftxboundary >= rightxboundary) {
+						else if(playerleftxboundary > rightxboundary) {
 							xcollision = false;
 						}else {
 							xcollision = true;

@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 public final class StartScreen implements Screen, InputProcessor {
 	
@@ -31,7 +30,7 @@ public final class StartScreen implements Screen, InputProcessor {
 	private Pixmap backgroundShadePixmap;
 	private Texture backgroundShadeTexture;
 	
-	private InfoMonitor typeAdvice;
+	//private InfoMonitor typeAdvice;
 	
 	private Main game;
 	private OrthographicCamera cam;
@@ -94,7 +93,7 @@ public final class StartScreen implements Screen, InputProcessor {
 		backgroundShadeTexture = new Texture(backgroundShadePixmap);
 		backgroundShadePixmap.dispose();
 		
-		typeAdvice = new InfoMonitor(50, CAM_HEIGHT/2 - 75, 250, 150, "Type \n P-L-A-Y \n to start the game!", this.game);
+		//typeAdvice = new InfoMonitor(50, CAM_HEIGHT/2 - 75, 250, 150, "Type \n P-L-A-Y \n to start the game!", this.game);
 		
 		
 		game.spritebatch.setProjectionMatrix(cam.combined);
@@ -130,7 +129,7 @@ public final class StartScreen implements Screen, InputProcessor {
 		for(Keybutton b : buttons)
 			b.render(game);
 		
-		typeAdvice.render(game);
+		//typeAdvice.render(game);
 		game.spritebatch.end();
 		
 		wordPlay.update();

@@ -1,6 +1,7 @@
 package com.thetriumvirate.game;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
@@ -32,6 +33,9 @@ public class Player {
 	private boolean doublejumpallowed;
 	private boolean freeze;
 	
+	private static final String RES_JUMP_SOUND = "audio/jump_spacebar.wav";
+	private Sound jumpSound;
+	
 	private boolean pressed = false;
 	
 	public Player(GameScreen gamescreen, Vector2 position, int space_remaining, boolean doublejumpallowed) {
@@ -43,17 +47,20 @@ public class Player {
 		this.doublejumpallowed = doublejumpallowed;
 		this.speed = new Vector2(0, 0);
 		consecutivejumps = 0;
+		
 		player_texture = gamescreen.getGame().assetmanager.get(RES_PLAYER_TEXTURE, Texture.class);
 		player_texture_down = gamescreen.getGame().assetmanager.get(RES_PLAYER_TEXTURE_DOWN, Texture.class);
+		jumpSound = gamescreen.getGame().assetmanager.get(RES_JUMP_SOUND);
 	}
 	
 	public static void prefetch(AssetManager m) {
 		m.load(RES_PLAYER_TEXTURE, Texture.class);
 		m.load(RES_PLAYER_TEXTURE_DOWN, Texture.class);
+
+		m.load(RES_JUMP_SOUND, Sound.class);
 	}
 	
 	public void update(float delta) {
-		System.out.println("render");
 		if(freeze) {
 			return;
 		}
@@ -200,8 +207,10 @@ public class Player {
 		if(startjump) {
 			if(consecutivejumps == 0) {
 				speed.y += JUMP_SPEED;
+				if(space_remaining >= 0)jumpSound.play(0.8f);
 			}else if(consecutivejumps == 1 && doublejumpallowed) {
 				speed.y += DOUBLE_JUMP_SPEED;
+				if(space_remaining >= 0)jumpSound.play(0.8f);
 			}
 			startjump = false;
 			consecutivejumps++;

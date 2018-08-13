@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -26,12 +27,14 @@ public class GameOverScreen  implements Screen, InputProcessor{
 	private static final String TITLE_BACKGROUND_TEXTURE = "graphics/well_done_title.png";
 	private Texture title_background_texture;
 	
+	private static final String RES_GAMEOVER_SOUND = "audio/gameOver.wav";
+	private Sound gameOverSound;
+	
 	private Main game;
 	private OrthographicCamera cam;
 	
 	
 	private BitmapFont titleFont;
-	private BitmapFont defaultFont;
 	
 	private GlyphLayout titleLayout;
 	
@@ -61,7 +64,6 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		
 		
 		titleFont = game.assetmanager.easyget(game.RES_TITLE_FONT_NAME, BitmapFont.class);
-		defaultFont = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class); 
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		
@@ -72,6 +74,7 @@ public class GameOverScreen  implements Screen, InputProcessor{
 		backgroundShadePixmap.dispose();
 		
 		title_background_texture = game.assetmanager.get(TITLE_BACKGROUND_TEXTURE, Texture.class);
+		gameOverSound = game.assetmanager.get(RES_GAMEOVER_SOUND);
 		
 		deathMessageText = deathMessage;
 		
@@ -81,7 +84,7 @@ public class GameOverScreen  implements Screen, InputProcessor{
 	}
 	
 	private void initContent() {
-		titleLayout = new GlyphLayout(titleFont, "You failed!");
+		titleLayout = new GlyphLayout(titleFont, "You died!");
 		
 		String[] words = deathMessageText.split(" ");
 		textBtns = new WordButton[words.length];
@@ -146,6 +149,7 @@ public class GameOverScreen  implements Screen, InputProcessor{
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
+		gameOverSound.play(1f);
 	}
 
 	@Override
@@ -176,7 +180,7 @@ public class GameOverScreen  implements Screen, InputProcessor{
 	}
 
 	public static void prefetch(AssetManager m) {
-		
+		m.load(RES_GAMEOVER_SOUND, Sound.class);
 	}
 	
 	@Override

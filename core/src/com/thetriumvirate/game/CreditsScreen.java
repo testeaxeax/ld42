@@ -117,7 +117,7 @@ public final class CreditsScreen implements Screen, InputProcessor {
 			b.render(game);
 		
 		if(textLayout != null)
-			font.draw(game.spritebatch, textLayout, 0, CAM_HEIGHT / 2 + textLayout.height / 2 + 50);
+			font.draw(game.spritebatch, textLayout, 0, CAM_HEIGHT / 2 + textLayout.height / 2);
 		
 		game.spritebatch.end();
 		

@@ -2,11 +2,11 @@ package com.thetriumvirate.game;
 
 import java.util.ArrayList;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -32,7 +32,6 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	
 	
 	private BitmapFont titleFont;
-	private BitmapFont defaultFont;
 	
 	private GlyphLayout titleLayout;
 	
@@ -50,6 +49,9 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	private String leftSpaceText;
 	private String stageCompleteText;
 	
+	private static final String RES_FANFARE_SOUND = "audio/levelDone.wav";
+	private Sound fanfareSound;
+	
 	private int completedLevel;
 	
 	public EndOfLevelScreen(Main game, int remaining_space, int level) {
@@ -64,10 +66,11 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		
 		
 		titleFont = game.assetmanager.easyget(game.RES_TITLE_FONT_NAME, BitmapFont.class);
-		defaultFont = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class); 
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		title_background_texture = game.assetmanager.easyget(TITLE_BACKGROUND_TEXTURE, Texture.class);
+		
+		fanfareSound = game.assetmanager.get(RES_FANFARE_SOUND);
 		
 		backgroundShadePixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
 		backgroundShadePixmap.setColor(0f, 0f, 0f, 0.5f);
@@ -102,6 +105,7 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		for(WordButton w : spaceLeftBtns) {
 			w.setX(wpx);
 			wpx += w.getWidth() + spaceLeftBtns[0].getButtons().get(0).getWidth()/2;
+			
 		}
 		
 		
@@ -167,6 +171,7 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(this);
+		fanfareSound.play(1f);
 	}
 
 	@Override
@@ -195,6 +200,7 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 
 	public static void prefetch(AssetManager m) {
 		m.load(TITLE_BACKGROUND_TEXTURE, Texture.class);
+		m.load(RES_FANFARE_SOUND, Sound.class);
 	}
 	
 	@Override

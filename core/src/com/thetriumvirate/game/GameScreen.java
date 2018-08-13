@@ -109,7 +109,7 @@ public final class GameScreen implements Screen, InputProcessor {
 		
 		switch(level) {
 		// START LEVEL CONFIG
-		case 0:
+		case 1:
 			gridconfig = "0:32,0;"
 					+ "0,0:25;"
 					+ "0:32,24;"
@@ -124,7 +124,7 @@ public final class GameScreen implements Screen, InputProcessor {
 			goaly = 0;
 			showTutorial = true;
 			break;
-		case 2:
+		case 3:
 			gridconfig = "1:3,2;"
 					+ "0,0:25;"
 					+ "31,0:15;"
@@ -146,7 +146,7 @@ public final class GameScreen implements Screen, InputProcessor {
 			goaly = 15;
       showTutorial = false;
       break;
-    case 1:
+    case 2:
 			// mittel - schwer
 			gridconfig = border 
 						+ "31,0:20;"

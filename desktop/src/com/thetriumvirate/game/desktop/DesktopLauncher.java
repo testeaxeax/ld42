@@ -11,11 +11,10 @@ public class DesktopLauncher {
 		config.height = Main.SCREEN_HEIGHT;
 		config.width = Main.SCREEN_WIDTH;
 		config.resizable = false;
-		// TODO Set title
-		config.title = "Game";
-		// TODO Create icons
-		//config.addIcon("graphics/icon32.png", Files.FileType.Internal);
-		//config.addIcon("graphics/icon16.png", Files.FileType.Internal);
+		config.title = "Spacebars";
+		config.addIcon("graphics/icon_64.png", Files.FileType.Internal);
+		config.addIcon("graphics/icon_32.png", Files.FileType.Internal);
+		config.addIcon("graphics/icon_16.png", Files.FileType.Internal);
 		new LwjglApplication(new Main(new DesktopFontLoader()), config);
 	}
 }

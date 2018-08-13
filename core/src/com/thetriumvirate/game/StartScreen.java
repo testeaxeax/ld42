@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 public final class StartScreen implements Screen, InputProcessor {
 	
@@ -21,6 +23,10 @@ public final class StartScreen implements Screen, InputProcessor {
 	private static final String  BACKGROUND_TEXTURE = "graphics/background.png";
 	private Texture background_texture;
 	
+	private static final String TITLE_BACKGROUND_TEXTURE = "graphics/well_done_title.png";
+	private Texture title_background_texture;
+	private GlyphLayout titleLayout;
+	
 	
 	private ArrayList<Keybutton> buttons;
 	private WordButton wordPlay;
@@ -29,6 +35,8 @@ public final class StartScreen implements Screen, InputProcessor {
 	
 	private Pixmap backgroundShadePixmap;
 	private Texture backgroundShadeTexture;
+	
+	private BitmapFont titleFont;
 	
 	//private InfoMonitor typeAdvice;
 	
@@ -93,6 +101,9 @@ public final class StartScreen implements Screen, InputProcessor {
 		backgroundShadeTexture = new Texture(backgroundShadePixmap);
 		backgroundShadePixmap.dispose();
 		
+		title_background_texture = game.assetmanager.get(TITLE_BACKGROUND_TEXTURE, Texture.class);
+		titleFont = game.assetmanager.get(game.RES_TITLE_FONT_NAME);
+		titleLayout = new GlyphLayout(titleFont, "SPACEBARS");
 		//typeAdvice = new InfoMonitor(50, CAM_HEIGHT/2 - 75, 250, 150, "Type \n P-L-A-Y \n to start the game!", this.game);
 		
 		
@@ -121,10 +132,12 @@ public final class StartScreen implements Screen, InputProcessor {
 		game.spritebatch.begin();
 		//draw background
 		game.spritebatch.draw(background_texture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
-		
 		game.spritebatch.draw(backgroundShadeTexture, 0, 0, game.SCREEN_WIDTH, game.SCREEN_HEIGHT);
 		
-		
+		game.spritebatch.draw(title_background_texture, (game.SCREEN_WIDTH - title_background_texture.getWidth())/2, 
+				  game.SCREEN_HEIGHT/4*3);
+		titleFont.draw(game.spritebatch, titleLayout, game.SCREEN_WIDTH/2 - titleLayout.width/2, game.SCREEN_HEIGHT/4*3 
+				+ titleLayout.height + (title_background_texture.getHeight() - titleLayout.height)/2);
 		
 		for(Keybutton b : buttons)
 			b.render(game);

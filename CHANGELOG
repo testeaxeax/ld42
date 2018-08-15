@@ -1,0 +1,14 @@
+# Changelog
+
+## [1.0.1] - 2018-08-15
+### Changed
+- Making the "Retry" button work properly.
+- Changing the package name to "com.thetriumvirate.spacebars".
+- Excluding html assets from desktop build
+
+### Removed
+- Unused library "box2d"
+
+## [1.0.0] - 2018-08-14
+### Added
+- The entire game.

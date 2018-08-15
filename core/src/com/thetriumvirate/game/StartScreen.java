@@ -111,7 +111,7 @@ public final class StartScreen implements Screen, InputProcessor {
 		backgroundShadePixmap.dispose();
 		
 		title_background_texture = game.assetmanager.get(TITLE_BACKGROUND_TEXTURE, Texture.class);
-		titleFont = game.assetmanager.get(game.RES_TITLE_FONT_NAME);
+		titleFont = game.fontloader.get(game.RES_TITLE_FONT_NAME);
 		titleLayout = new GlyphLayout(titleFont, "SPACEBARS");
 		//typeAdvice = new InfoMonitor(50, CAM_HEIGHT/2 - 75, 250, 150, "Type \n P-L-A-Y \n to start the game!", this.game);
 		

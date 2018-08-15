@@ -70,8 +70,8 @@ public final class GameScreen implements Screen, InputProcessor {
 		game.spritebatch.setProjectionMatrix(cam.combined);
 		Gdx.gl.glClearColor(1, 0, 0, 1);
 
-		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
-		littleFont = game.assetmanager.easyget(game.RES_LITTLE_FONT_NAME, BitmapFont.class);
+		font = game.fontloader.get(game.RES_DEFAULT_FONT);
+		littleFont = game.fontloader.get(game.RES_LITTLE_FONT_NAME);
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		arrowTexture = game.assetmanager.get(RES_ARROW_TEXTURE);

@@ -78,7 +78,7 @@ public class Keybutton {
 	public static void load(Main game) {
 		background = game.assetmanager.easyget(TEX_PATH_UP, Texture.class);
 		background_pressed = game.assetmanager.easyget(TEX_PATH_DOWN, Texture.class);
-		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
+		font = game.fontloader.get(game.RES_DEFAULT_FONT);
 	}
 
 //	public static void prefetch(AssetManager m) {

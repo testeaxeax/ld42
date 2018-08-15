@@ -20,7 +20,37 @@ public class Keybutton {
 
 	private boolean stateSwitching;
 	private boolean state;
+	private int count;
+	private final int statechangecount;
 
+	public Keybutton(int x, int y, int keycode, boolean stateSwitching, int statechangecount) {
+		this.x = x;
+		this.y = y;
+		this.keycode = keycode;
+		this.key = Input.Keys.toString(keycode);
+
+		this.width = NORMAL_WIDTH;
+		this.height = NORMAL_HEIGHT;
+		this.stateSwitching = stateSwitching;
+		this.state = false;
+		this.count = 1;
+		this.statechangecount = statechangecount;
+	}
+	
+	public Keybutton(int x, int y, int width, int height, int keycode, boolean stateSwitching, int statechangecount) {
+		this.x = x;
+		this.y = y;
+		this.keycode = keycode;
+		this.key = Input.Keys.toString(keycode);
+
+		this.width = width;
+		this.height = height;
+		this.stateSwitching = stateSwitching;
+		this.state = false;
+		this.count = 1;
+		this.statechangecount = statechangecount;
+	}
+	
 	public Keybutton(int x, int y, int keycode, boolean stateSwitching) {
 		this.x = x;
 		this.y = y;
@@ -31,6 +61,8 @@ public class Keybutton {
 		this.height = NORMAL_HEIGHT;
 		this.stateSwitching = stateSwitching;
 		this.state = false;
+		this.count = 1;
+		this.statechangecount = 1;
 	}
 	
 	public Keybutton(int x, int y, int width, int height, int keycode, boolean stateSwitching) {
@@ -43,6 +75,8 @@ public class Keybutton {
 		this.height = height;
 		this.stateSwitching = stateSwitching;
 		this.state = false;
+		this.count = 1;
+		this.statechangecount = 1;
 	}
 	
 	public void updateKeycode(int keycode) {
@@ -53,7 +87,12 @@ public class Keybutton {
 	public boolean updateState(int keycode, boolean down) {
 		if (keycode == this.keycode) {
 			if (down) {
-				this.state = this.stateSwitching ? !this.state : true;
+				if(count >= statechangecount) {
+					this.state = this.stateSwitching ? !this.state : true;
+					count = 0;
+				}else {
+					count++;
+				}
 			} else {
 				if (!this.stateSwitching)
 					this.state = false;

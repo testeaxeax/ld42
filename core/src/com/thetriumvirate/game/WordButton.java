@@ -13,14 +13,30 @@ public class WordButton {
 	public static final int NORMAL_SPACING = 4;
 	
 	public WordButton(int x, int y, int spacing, WordButtonListener listener, String word, boolean middle) {
+		String worduppercase = word.toUpperCase();
+		int statechangecount;
+		String character;
+		int currentindex;
 		buttons = new ArrayList<Keybutton>();
 		this.spacing = spacing;
 		this.listener = listener;
 		
 		int prevX = x;
-		for(int i = 0; i < word.length(); i++) {
+		for(int i = 0; i < worduppercase.length(); i++) {
+			statechangecount = 1;
+			currentindex = 0;
+			character = worduppercase.substring(i, i + 1);
+			while(true) {
+				currentindex = worduppercase.indexOf(character, currentindex);
+				if(currentindex != i) {
+					statechangecount++;
+					currentindex++;
+				}else {
+					break;
+				}
+			}
 			//System.out.println(i + ": " + word.substring(i,  i + 1) + " | " + Input.Keys.valueOf(word.substring(i, i + 1)));
-			Keybutton b = new Keybutton(prevX, y, Input.Keys.valueOf(word.substring(i, i + 1).toUpperCase()), true); 
+			Keybutton b = new Keybutton(prevX, y, Input.Keys.valueOf(character), true, statechangecount); 
 			buttons.add(b);
 			prevX += b.getWidth() + this.spacing;
 		}

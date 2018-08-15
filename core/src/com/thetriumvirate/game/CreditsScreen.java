@@ -99,7 +99,7 @@ public final class CreditsScreen implements Screen, InputProcessor {
 	public void show() {
 		Gdx.input.setInputProcessor(this);
 
-		font = game.assetmanager.get(game.RES_DEFAULT_FONT, BitmapFont.class);
+		font = game.fontloader.get(game.RES_DEFAULT_FONT);
 
 		this.textLayout = new GlyphLayout();
 		this.textLayout.setText(font, CREDITS, Color.BLACK, CAM_WIDTH, Align.center, true);

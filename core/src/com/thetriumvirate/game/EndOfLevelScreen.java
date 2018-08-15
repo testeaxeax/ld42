@@ -69,7 +69,7 @@ public final class EndOfLevelScreen implements Screen, InputProcessor{
 		buttons = new ArrayList<Keybutton>();
 		
 		
-		titleFont = game.assetmanager.easyget(game.RES_TITLE_FONT_NAME, BitmapFont.class);
+		titleFont = game.fontloader.get(game.RES_TITLE_FONT_NAME);
 		
 		background_texture = game.assetmanager.easyget(BACKGROUND_TEXTURE, Texture.class);
 		title_background_texture = game.assetmanager.easyget(TITLE_BACKGROUND_TEXTURE, Texture.class);

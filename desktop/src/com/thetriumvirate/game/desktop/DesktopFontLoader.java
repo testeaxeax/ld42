@@ -56,4 +56,9 @@ public final class DesktopFontLoader implements FontLoader {
 	public String getFullPath(String assetpath) {
 		return "desktop/" + assetpath + ".ttf";
 	}
+	
+	@Override
+	public BitmapFont get(String name) {
+		return game.assetmanager.easyget(name, BitmapFont.class);
+	}
 }

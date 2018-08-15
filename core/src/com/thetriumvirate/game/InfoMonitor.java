@@ -23,7 +23,7 @@ public class InfoMonitor {
 		this.width = width;
 		this.height = height;
 		
-		font = game.assetmanager.get(game.RES_INFO_FONT_NAME);
+		font = game.fontloader.get(game.RES_INFO_FONT_NAME);
 		monitor_texture = game.assetmanager.get(RES_MONITOR_TEXTURE);
 		
 		messageLayout = new GlyphLayout(font, message, Color.BLACK, width, 1, true);

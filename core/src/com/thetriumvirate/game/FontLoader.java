@@ -1,6 +1,7 @@
 package com.thetriumvirate.game;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 public interface FontLoader {
 
@@ -10,4 +11,5 @@ public interface FontLoader {
 	public void load(String name);
 	public void setGame(Main p);
 	public String getFullPath(String assetpath);
+	public BitmapFont get(String name);
 }

@@ -55,8 +55,8 @@ public final class SplashScreen implements Screen {
 		layout = new GlyphLayout();
 		game.loadGlobalResources();
 		// Getting all resources required for SplashScreen
-		font = game.assetmanager.easyget(game.RES_DEFAULT_FONT, BitmapFont.class);
-		littleFont = game.assetmanager.easyget(game.RES_LITTLE_FONT_NAME, BitmapFont.class);
+		font = game.fontloader.get(game.RES_DEFAULT_FONT);
+		littleFont = game.fontloader.get(game.RES_LITTLE_FONT_NAME);
 		
 		initBackground();
 		

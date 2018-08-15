@@ -1,4 +1,4 @@
-package com.thetriumvirate.game;
+package com.thetriumvirate.spacebars;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.thetriumvirate.game.WordButton.WordButtonListener;
+import com.thetriumvirate.spacebars.WordButton.WordButtonListener;
 
 public final class EndOfLevelScreen implements Screen, InputProcessor{
 	

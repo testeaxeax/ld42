@@ -1,9 +1,9 @@
-package com.thetriumvirate.game.desktop;
+package com.thetriumvirate.spacebars.desktop;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.thetriumvirate.game.Main;
+import com.thetriumvirate.spacebars.Main;
 
 public class DesktopLauncher {
 	public static void main(String[] arg) {

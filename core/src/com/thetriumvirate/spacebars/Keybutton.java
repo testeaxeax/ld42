@@ -1,4 +1,4 @@
-package com.thetriumvirate.game;
+package com.thetriumvirate.spacebars;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;

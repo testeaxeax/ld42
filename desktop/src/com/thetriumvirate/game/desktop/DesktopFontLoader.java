@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
-import com.thetriumvirate.game.FontLoader;
-import com.thetriumvirate.game.Main;
+import com.thetriumvirate.spacebars.FontLoader;
+import com.thetriumvirate.spacebars.Main;
 
 public final class DesktopFontLoader implements FontLoader {
 	

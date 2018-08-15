@@ -1,4 +1,4 @@
-package com.thetriumvirate.game;
+package com.thetriumvirate.spacebars;
 
 import java.util.Random;
 

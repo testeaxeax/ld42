@@ -1,4 +1,4 @@
-package com.thetriumvirate.game.client;
+package com.thetriumvirate.spacebars.client;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,8 +8,8 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.thetriumvirate.game.FontLoader;
-import com.thetriumvirate.game.Main;
+import com.thetriumvirate.spacebars.FontLoader;
+import com.thetriumvirate.spacebars.Main;
 
 public class HtmlFontLoader implements FontLoader {
 	

@@ -1,4 +1,4 @@
-package com.thetriumvirate.game;
+package com.thetriumvirate.spacebars;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;

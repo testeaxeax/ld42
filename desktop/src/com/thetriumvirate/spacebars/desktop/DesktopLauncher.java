@@ -1,4 +1,4 @@
-package com.thetriumvirate.game.desktop;
+package com.thetriumvirate.spacebars.desktop;
 
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;

@@ -1,4 +1,4 @@
-package com.thetriumvirate.game.desktop;
+package com.thetriumvirate.spacebars.desktop;
 
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
